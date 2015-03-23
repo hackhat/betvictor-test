@@ -23,4 +23,21 @@ describe('Data source', function(){
 
 
 
+    it('should return a shallow copy of the data', function(done){
+        var DataSource = require('server/DataSource');
+        var dataSource = new DataSource();
+        dataSource.getData().then(function(data){
+            expect(data).to.be.instanceof(Array);
+            data[0] = 'changed';
+            return dataSource.getData();
+        }).then(function(data){
+            expect(data[0]).to.not.equal('changed');
+            done();
+        }).catch(function(err){
+            done(err);
+        });
+    })
+
+
+
 })
