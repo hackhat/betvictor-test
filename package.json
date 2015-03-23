@@ -1,0 +1,19 @@
+{
+  "name": "betvictor_test",
+  "version": "1.0.0",
+  "description": "",
+  "author": "hackhat",
+  "dependencies": {
+    "enhanced-require": "^0.5.0-beta6",
+    "lodash": "^3.5.0",
+    "webpack": "^1.7.3"
+  },
+  "scripts": {
+    "checkDeps": "npm-dview"
+  },
+  "devDependencies": {
+    "cucumber": "^0.4.8",
+    "cucumberry": "0.0.3",
+    "hide-stack-frames-from": "^1.0.0"
+  }
+}

@@ -1,0 +1,6 @@
+{
+    "--": ["./src"],
+    "--title": "betvictor_test Docs",
+    "--output": "./docs/jsduck"
+    // "--guides": "./docs/guides/guides.json"
+}
