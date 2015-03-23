@@ -17,14 +17,14 @@ var DataSource = function(options){
     }, options);
 
     /**
-     * Saves cached data.
+     * Stores cached data.
      * @type {Array}
      * @private
      */
     this.__data = [];
 
     /**
-     * Urls which will be used to get data.
+     * Url which will be used to get data.
      * @type {String}
      * @private
      */
