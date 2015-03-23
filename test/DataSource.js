@@ -62,7 +62,6 @@ describe('Data source', function(){
 
 
     it('should return some sports if using force refresh', function(done){
-        this.timeout(10000);
         __sandbox.stub(request, 'get')
             .withArgs(appSettings.dataSourceUrl)
             .yieldsAsync(void 0, {statusCode: 200}, JSON.stringify(liveData));
@@ -82,7 +81,6 @@ describe('Data source', function(){
 
 
     it('should throw an error if data not available', function(done){
-        this.timeout(10000);
         var errorName = 'Stub error.';
         __sandbox.stub(request, 'get')
             .withArgs(appSettings.dataSourceUrl)
