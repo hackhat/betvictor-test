@@ -13,6 +13,22 @@ describe('Data source', function(){
 
 
 
+    var __sandbox;
+
+
+
+    beforeEach(function () {
+        __sandbox = sinon.sandbox.create();
+    });
+
+
+
+    afterEach(function () {
+        __sandbox.restore();
+    });
+
+
+
     it('should be empty by default', function(done){
         var DataSource = require('server/DataSource');
         var dataSource = new DataSource();
@@ -63,7 +79,10 @@ describe('Data source', function(){
 
     it('should throw an error if data not available', function(done){
         this.timeout(10000);
-        var stub = sinon.stub(request, 'get').yieldsAsync(new Error('Stub error.'));
+        var errorName = 'Stub error.';
+        __sandbox.stub(request, 'get')
+            .withArgs(appSettings.dataSourceUrl)
+            .yieldsAsync(new Error('Stub error.'));
         var DataSource = require('server/DataSource');
         var dataSource = new DataSource({
             url: appSettings.dataSourceUrl
@@ -72,6 +91,7 @@ describe('Data source', function(){
             done(new Error('Should throw an error.'));
         }).catch(function(err){
             expect(err).to.be.ok;
+            expect(err.message).to.be.equal(errorName);
             done();
         });
     })
