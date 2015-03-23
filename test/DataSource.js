@@ -3,6 +3,8 @@ var expect      = require("chai").expect;
 var request     = require('request');
 var sinon       = require.originalRequire('sinon'); // Has some issues with enhanced require.
 var appSettings = require('server/settings')();
+var liveData    = require('test/data/live.json');
+
 
 
 

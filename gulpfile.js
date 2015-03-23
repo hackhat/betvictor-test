@@ -7,6 +7,9 @@ var webpackConfig = require('tottys-project').webpackConfig({
     }
 })
 
+var path = require('path');
+webpackConfig.resolve.alias['test'] = path.join(__dirname, './test');
+
 
 // highcharts config
 webpackConfig.module.loaders.push({
