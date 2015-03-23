@@ -15,12 +15,19 @@ var DataSource = function(options){
     options = _.extend({
         url: void 0
     }, options);
+
     /**
      * Saves cached data.
      * @type {Array}
      * @private
      */
     this.__data = [];
+
+    /**
+     * Urls which will be used to get data.
+     * @type {String}
+     * @private
+     */
     this.__url = options.url;
 }
 
@@ -58,6 +65,10 @@ _.extend(DataSource.prototype, {
 
 
 
+    /**
+     * Refreshes the data of this DataSource.
+     * @return {Q} Returns a Q promise.
+     */
     refresh: function(){
         var deferred = Q.defer();
         Q.nfcall(request.get, this.__url).spread(function(res, body){
@@ -69,6 +80,7 @@ _.extend(DataSource.prototype, {
         });
         return deferred.promise;
     }
+
 
 
 })
