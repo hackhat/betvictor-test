@@ -60,12 +60,12 @@ _.extend(DataSource.prototype, {
 
     refresh: function(){
         var deferred = Q.defer();
-        Q.nfcall(request, this.__url).spread(function(res, body){
+        Q.nfcall(request.get, this.__url).spread(function(res, body){
             var data = JSON.parse(body);
             this.__data = data.sports;
             deferred.resolve();
         }.bind(this)).catch(function(err){
-            deferred.reject();
+            deferred.reject(err);
         });
         return deferred.promise;
     }
