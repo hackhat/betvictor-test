@@ -12,14 +12,15 @@
     "gulp-shell": "^0.3.0",
     "gulp-util": "^3.0.4",
     "html-webpack-plugin": "^1.1.0",
+    "json-loader": "^0.5.1",
     "lodash": "^3.5.0",
     "q": "^1.2.0",
+    "request": "^2.53.0",
     "tottys-project": "0.0.5",
     "webpack": "^1.7.3",
     "webpack-dev-server": "^1.7.0"
   },
-  "scripts": {
-  },
+  "scripts": {},
   "devDependencies": {
     "chai": "^2.1.2",
     "cucumber": "^0.4.8",
