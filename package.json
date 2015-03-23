@@ -13,19 +13,19 @@
     "gulp-util": "^3.0.4",
     "html-webpack-plugin": "^1.1.0",
     "lodash": "^3.5.0",
+    "q": "^1.2.0",
     "tottys-project": "0.0.5",
     "webpack": "^1.7.3",
     "webpack-dev-server": "^1.7.0"
   },
   "scripts": {
-    "checkDeps": "npm-dview",
-    "test-cov": "istanbul cover _mocha"
   },
   "devDependencies": {
     "chai": "^2.1.2",
     "cucumber": "^0.4.8",
     "cucumberry": "0.0.3",
     "hide-stack-frames-from": "^1.0.0",
-    "istanbul": "^0.3.8"
+    "istanbul": "^0.3.8",
+    "mocha": "^2.2.1"
   }
 }
