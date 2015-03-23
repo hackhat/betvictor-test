@@ -1,7 +1,8 @@
 require         = require('../getWebpackRequire');
+var sinon       = require.originalRequire('sinon'); // Has some issues with enhanced require.
 var expect      = require("chai").expect;
 var request     = require('request');
-var sinon       = require.originalRequire('sinon'); // Has some issues with enhanced require.
+var _           = require('lodash');
 var appSettings = require('server/settings')();
 var liveData    = require('test/data/live.json');
 
@@ -62,6 +63,9 @@ describe('Data source', function(){
 
     it('should return some sports if using force refresh', function(done){
         this.timeout(10000);
+        __sandbox.stub(request, 'get')
+            .withArgs(appSettings.dataSourceUrl)
+            .yieldsAsync(void 0, {statusCode: 200}, JSON.stringify(liveData));
         var DataSource = require('server/DataSource');
         var dataSource = new DataSource({
             url: appSettings.dataSourceUrl
