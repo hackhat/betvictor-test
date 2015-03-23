@@ -12,8 +12,10 @@
     "checkDeps": "npm-dview"
   },
   "devDependencies": {
+    "chai": "^2.1.2",
     "cucumber": "^0.4.8",
     "cucumberry": "0.0.3",
-    "hide-stack-frames-from": "^1.0.0"
+    "hide-stack-frames-from": "^1.0.0",
+    "istanbul": "^0.3.8"
   }
 }
