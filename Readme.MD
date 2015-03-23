@@ -23,6 +23,12 @@ If you ran the test with code coverage open this file to check the html report: 
 
 
 
+## API
+
+The API can be found by opening the file `./docs/jsduck/index.html`.
+
+
+
 ## Objectives
 
 Create a Node.js application that calls the following URL and navigates through it's content.
