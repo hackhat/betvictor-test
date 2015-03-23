@@ -54,7 +54,7 @@ _.extend(DataSource.prototype, {
         if(options.forceRefresh){
             this.refresh().then(function(){
                 deferred.resolve(this.__data.slice(0));
-            }.bind(this), function(err){
+            }.bind(this)).catch(function(err){
                 deferred.reject(err);
             })
         }else{
@@ -72,6 +72,10 @@ _.extend(DataSource.prototype, {
     refresh: function(){
         var deferred = Q.defer();
         Q.nfcall(request.get, this.__url).spread(function(res, body){
+            if(res.statusCode !== 200){
+                deferred.reject(new Error('Status code not 200.'));
+                return;
+            }
             var data = JSON.parse(body);
             this.__data = data.sports;
             deferred.resolve();
