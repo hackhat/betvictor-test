@@ -1,7 +1,8 @@
-require         = require('../getWebpackRequire')
+require         = require('../getWebpackRequire');
 var expect      = require("chai").expect;
+var request     = require('request');
+var sinon       = require.originalRequire('sinon'); // Has some issues with enhanced require.
 var appSettings = require('server/settings')();
-
 
 
 
@@ -42,16 +43,34 @@ describe('Data source', function(){
 
 
     it('should return some sports if using force refresh', function(done){
+        this.timeout(10000);
         var DataSource = require('server/DataSource');
         var dataSource = new DataSource({
             url: appSettings.dataSourceUrl
         });
         dataSource.getData({forceRefresh: true}).then(function(data){
             expect(data).to.be.instanceof(Array);
-            expect(data).to.have.length.above(0);;
+            expect(data).to.have.length.above(0);
             done();
         }).catch(function(err){
             done(err);
+        });
+    })
+
+
+
+    it('should throw an error if data not available', function(done){
+        this.timeout(10000);
+        var stub = sinon.stub(request, 'get').yieldsAsync(new Error('Stub error.'));
+        var DataSource = require('server/DataSource');
+        var dataSource = new DataSource({
+            url: appSettings.dataSourceUrl
+        });
+        dataSource.getData({forceRefresh: true}).then(function(data){
+            done(new Error('Should throw an error.'));
+        }).catch(function(err){
+            expect(err).to.be.ok;
+            done();
         });
     })
 
