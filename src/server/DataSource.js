@@ -5,14 +5,23 @@ var request = require('request');
 
 
 
-
-var DataSource = function(){
+/**
+ * Data source contains the data about sports and its events.
+ *
+ * @param {Object} options
+ * @param {String} options.url The url to the json api.
+ */
+var DataSource = function(options){
+    options = _.extend({
+        url: void 0
+    }, options);
     /**
      * Saves cached data.
      * @type {Array}
      * @private
      */
     this.__data = [];
+    this.__url = options.url;
 }
 
 
@@ -44,6 +53,20 @@ _.extend(DataSource.prototype, {
         }else{
             deferred.resolve(this.__data.slice(0));
         }
+        return deferred.promise;
+    },
+
+
+
+    refresh: function(){
+        var deferred = Q.defer();
+        Q.nfcall(request, this.__url).spread(function(res, body){
+            var data = JSON.parse(body);
+            this.__data = data.sports;
+            deferred.resolve();
+        }.bind(this)).catch(function(err){
+            deferred.reject();
+        });
         return deferred.promise;
     }
 
