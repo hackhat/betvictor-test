@@ -5,11 +5,21 @@
   "author": "hackhat",
   "dependencies": {
     "enhanced-require": "^0.5.0-beta6",
+    "extract-text-webpack-plugin": "^0.3.8",
+    "gulp": "^3.8.11",
+    "gulp-clean": "^0.3.1",
+    "gulp-cucumber": "0.0.8",
+    "gulp-shell": "^0.3.0",
+    "gulp-util": "^3.0.4",
+    "html-webpack-plugin": "^1.1.0",
     "lodash": "^3.5.0",
-    "webpack": "^1.7.3"
+    "tottys-project": "0.0.5",
+    "webpack": "^1.7.3",
+    "webpack-dev-server": "^1.7.0"
   },
   "scripts": {
-    "checkDeps": "npm-dview"
+    "checkDeps": "npm-dview",
+    "test-cov": "istanbul cover _mocha"
   },
   "devDependencies": {
     "chai": "^2.1.2",
