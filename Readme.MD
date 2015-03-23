@@ -14,7 +14,7 @@ Minimum requisites are:
 
  - Method to list all sports (/sports)
  - Method to list all events for a given sport (/sports/<id>)
- - Method to list all outcomes for a given event (/sports/<id>/events/<id>
+ - Method to list all outcomes for a given event (/sports/<id>/events/<id>)
  - Full test coverage (Mocha is a good test framework)
 
 Notes:
