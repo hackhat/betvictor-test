@@ -2,6 +2,25 @@
 
 This is a test project for Bet Victor.
 
+
+
+## Install
+
+ - Clone project;
+ - Open a console into the root of the project;
+ - Run the command `npm install`;
+
+
+
+## Run tests
+
+To run tests you have to open a console and cd into the root of the project. Then chose the type of test to run:
+
+ - With code coverage: `istanbul cover --hook-run-in-context node_modules/mocha/bin/_mocha -- -R spec`
+ - Without code coverage: `mocha`;
+
+
+
 ## Objectives
 
 Create a Node.js application that calls the following URL and navigates through it's content.
