@@ -17,7 +17,9 @@
     "json-loader": "^0.5.1",
     "lodash": "^3.5.0",
     "q": "^1.2.0",
+    "react": "^0.13.1",
     "request": "^2.53.0",
+    "smart-css": "0.0.6",
     "tottys-project": "0.0.5",
     "webpack": "^1.7.3",
     "webpack-dev-server": "^1.7.0"

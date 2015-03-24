@@ -2,6 +2,7 @@ var express    = require('express');
 var DataSource = require('./DataSource');
 var settings   = require('./settings')();
 var Q          = require('q');
+var fs         = require('fs');
 var _          = require('lodash');
 var Root       = require('client/ui/Root')({});
 
@@ -29,6 +30,17 @@ module.exports = function(options, cb){
 
 
 
+    // No need to use any express specific templates because we just have 1 root template
+    // and the rest is generated with react. Is its job to take care of html, not express.
+    var indexHtml = fs.readFileSync('./dist/index.html', 'utf8');
+    var render = function(body){
+        var left  = '<div id="root">';
+        var right = '</div>';
+        return indexHtml.replace([left, right].join(''), [left, body, right].join(''));
+    }
+
+
+
     var dataSource = new DataSource({
         url : settings.dataSourceUrl
     });
@@ -38,8 +50,8 @@ module.exports = function(options, cb){
     app.get('/', function(req, res){
         var data = 'server';
         var React = require('react');
-        var html = React.renderToString(new Root({data: data}));
-        res.status(200).html(html);
+        var contents = React.renderToString(React.createElement(Root, {data: data}));
+        res.status(200).send(render(contents));
     });
 
 
@@ -70,6 +82,11 @@ module.exports = function(options, cb){
             res.status(200).json(outcomes);
         })
     });
+
+
+
+    // Required for static assets such as js and css.
+    app.use(express.static('dist'));
 
 
 
