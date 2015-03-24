@@ -3,6 +3,7 @@ var DataSource = require('./DataSource');
 var settings   = require('./settings')();
 var Q          = require('q');
 var _          = require('lodash');
+var Root       = require('client/ui/Root')({});
 
 
 
@@ -30,6 +31,15 @@ module.exports = function(options, cb){
 
     var dataSource = new DataSource({
         url : settings.dataSourceUrl
+    });
+
+
+
+    app.get('/', function(req, res){
+        var data = 'server';
+        var React = require('react');
+        var html = React.renderToString(new Root({data: data}));
+        res.status(200).html(html);
     });
 
 
