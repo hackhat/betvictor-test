@@ -15,11 +15,16 @@ describe('Data source', function(){
 
 
     var __sandbox;
+    var dataSource;
 
 
 
     beforeEach(function () {
         __sandbox = sinon.sandbox.create();
+        var DataSource = require('server/DataSource');
+        dataSource = new DataSource({
+            url: appSettings.dataSourceUrl
+        });
     });
 
 
@@ -31,8 +36,6 @@ describe('Data source', function(){
 
 
     it('should be empty by default', function(done){
-        var DataSource = require('server/DataSource');
-        var dataSource = new DataSource();
         dataSource.getData().then(function(data){
             expect(data).to.be.instanceof(Array);
             expect(data).to.be.empty;
@@ -45,8 +48,6 @@ describe('Data source', function(){
 
 
     it('should return a shallow copy of the data', function(done){
-        var DataSource = require('server/DataSource');
-        var dataSource = new DataSource();
         dataSource.getData().then(function(data){
             expect(data).to.be.instanceof(Array);
             data[0] = 'changed';
@@ -65,10 +66,6 @@ describe('Data source', function(){
         __sandbox.stub(request, 'get')
             .withArgs(appSettings.dataSourceUrl)
             .yieldsAsync(void 0, {statusCode: 200}, JSON.stringify(liveData));
-        var DataSource = require('server/DataSource');
-        var dataSource = new DataSource({
-            url: appSettings.dataSourceUrl
-        });
         dataSource.getData({forceRefresh: true}).then(function(data){
             expect(data).to.be.instanceof(Array);
             expect(data).to.have.length.above(0);
@@ -85,10 +82,6 @@ describe('Data source', function(){
         __sandbox.stub(request, 'get')
             .withArgs(appSettings.dataSourceUrl)
             .yieldsAsync(new Error('Stub error'));
-        var DataSource = require('server/DataSource');
-        var dataSource = new DataSource({
-            url: appSettings.dataSourceUrl
-        });
         dataSource.getData({forceRefresh: true}).then(function(data){
             done(new Error('Should throw an error.'));
         }, function(err){
@@ -106,10 +99,6 @@ describe('Data source', function(){
         __sandbox.stub(request, 'get')
             .withArgs(appSettings.dataSourceUrl)
             .yieldsAsync(void 0, {statusCode: 404}, void 0);
-        var DataSource = require('server/DataSource');
-        var dataSource = new DataSource({
-            url: appSettings.dataSourceUrl
-        });
         dataSource.getData({forceRefresh: true}).then(function(data){
             done(new Error('Should throw an error.'));
         }, function(err){
@@ -128,10 +117,6 @@ describe('Data source', function(){
         __sandbox.stub(request, 'get')
             .withArgs(appSettings.dataSourceUrl)
             .yieldsAsync(void 0, {statusCode: 200}, invalidJSONBody);
-        var DataSource = require('server/DataSource');
-        var dataSource = new DataSource({
-            url: appSettings.dataSourceUrl
-        });
         dataSource.getData({forceRefresh: true}).then(function(data){
             done(new Error('Should throw an error.'));
         }, function(err){
