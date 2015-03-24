@@ -44,8 +44,20 @@ module.exports = function(options, cb){
 
     app.get('/api/sports/:sportId', function(req, res){
         var sportId = parseInt(req.params.sportId);
+        // @todo: should also return sport
         dataSource.getEvents({sportId: sportId}).then(function(events){
             res.status(200).json(events);
+        })
+    });
+
+
+
+    app.get('/api/sports/:sportId/events/:eventId', function(req, res){
+        var sportId = parseInt(req.params.sportId);
+        var eventId = parseInt(req.params.eventId);
+        // @todo: should also return event
+        dataSource.getOutcomes({sportId: sportId, eventId: eventId}).then(function(outcomes){
+            res.status(200).json(outcomes);
         })
     });
 
