@@ -1,10 +1,12 @@
 require           = require('../getWebpackRequire');
 var sinon         = require.originalRequire('sinon'); // Has some issues with enhanced require.
+var _             = require('lodash');
 var expect        = require("chai").expect;
 var supertest     = require('supertest');
 var request       = require('request');
 var express       = require('express');
-var createApp     = require('server/boot');
+var async         = require('async');
+var createAppFn   = require('server/boot');
 var appSettings   = require('server/settings')();
 var liveData_day0 = require('test/data/liveData_day0.json');
 var liveData_day1 = require('test/data/liveData_day1.json');
@@ -24,14 +26,13 @@ describe('Server API', function(){
 
 
 
-    beforeEach(function () {
+    beforeEach(function(){
         __sandbox = sinon.sandbox.create();
-        app = createApp();
     });
 
 
 
-    afterEach(function () {
+    afterEach(function(){
         __sandbox.restore();
         app = void 0;
     });
@@ -49,23 +50,37 @@ describe('Server API', function(){
 
 
 
+
+    var createApp = function(done){
+        createAppFn({}, function(err, data){
+            if(err) return done(err);
+            app = data.app;
+            done();
+        });
+    }
+
+
+
     describe('/api/sports', function(){
 
 
 
         it('should return all sports', function(done){
             stubRequestWithCorrectData();
-            supertest(app)
-                .get('/api/sports')
-                .expect('Content-Type', /application\/json/)
-                .expect(200)
-                .end(function(err, res){
-                    if(err) throw err;
-                    var sports = res.body;
-                    expect(sports).to.be.instanceof(Array);
-                    expect(sports).to.have.length(16);
-                    done();
-                });
+            createApp(function(){
+                supertest(app)
+                    .get('/api/sports')
+                    .expect('Content-Type', /application\/json/)
+                    .expect(function(res){
+                        var sports = res.body;
+                        expect(sports).to.deep.equals(_.sortBy(liveData_day0.sports, 'pos'));
+                    })
+                    .expect(200)
+                    .end(function(err, res){
+                        if(err) throw err;
+                        done();
+                    });
+            });
         })
 
 
@@ -80,17 +95,23 @@ describe('Server API', function(){
 
         it('should return sport\'s events', function(done){
             stubRequestWithCorrectData();
-            supertest(app)
-                .get('/api/sports/' + footballSportId)
-                .expect('Content-Type', /application\/json/)
-                .expect(200)
-                .end(function(err, res){
-                    if(err) throw err;
-                    var sports = res.body;
-                    expect(sports).to.be.instanceof(Array);
-                    expect(sports).to.have.length(11);
-                    done();
-                });
+            createApp(function(){
+                async.eachSeries(liveData_day0.sports, function(sport, cb){
+                    supertest(app)
+                        .get('/api/sports/' + sport.id)
+                        .expect('Content-Type', /application\/json/)
+                        .expect(200)
+                        .expect(function(res){
+                            var events = res.body;
+                            expect(events).to.deep.equals(sport.events);
+                        })
+                        .end(function(err, res){
+                            cb(err);
+                        });
+                }, function(err){
+                    done(err);
+                })
+            })
         })
 
 
