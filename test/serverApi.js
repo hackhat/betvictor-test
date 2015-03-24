@@ -42,6 +42,8 @@ describe('Server API', function(){
 
 
 
+    // The following 1 function(s) should be refactored into their own files because are repeating the
+    // same code from the DataSource test.
     var stubRequestWithCorrectData = function(){
         __sandbox.stub(request, 'get')
             .withArgs(appSettings.dataSourceUrl)
@@ -112,7 +114,7 @@ describe('Server API', function(){
                 // is not required here. We just care about the second one.
                 refreshPromise = void 0;
                 __sandbox.clock.tick(refreshInterval + 1);
-                if(!refreshPromise) throw new Error('Refresh promise not yet present.')
+                if(!refreshPromise) throw new Error('Refresh promise not yet present')
                 // Only waits on the next promise.
                 return refreshPromise;
             }).then(function(){
@@ -132,6 +134,38 @@ describe('Server API', function(){
                     });
                 return deferred.promise;
             }).then(function(){
+                done();
+            }).catch(done);
+        })
+
+
+
+        it('should return last data if an error happens after the first refresh', function(done){
+            // This stub returns correct data the first time and then returns an internal error.
+            __sandbox.stub(request, 'get')
+                .withArgs(appSettings.dataSourceUrl)
+                    .onCall(0)
+                        .yieldsAsync(void 0, {statusCode: 200}, JSON.stringify(liveData_day0))
+                    .onCall(1)
+                        .yieldsAsync(new Error('Unexpected error'));
+
+            var refreshPromise;
+            var onRefresh = function(promise){
+                refreshPromise = promise;
+            }
+            createApp({onRefresh: onRefresh}).then(function(){
+                // Deletes the previous promise. Normally this should be the first promise which
+                // is not required here. We just care about the second one.
+                refreshPromise = void 0;
+                __sandbox.clock.tick(refreshInterval + 1);
+                if(!refreshPromise) throw new Error('Refresh promise not yet present')
+                // Only waits on the next promise.
+                return refreshPromise;
+            }).then(function(){
+                done(new Error('Should return an error'))
+            }, function(err){
+                expect(err).to.be.ok;
+                expect(err.message).to.be.equal('Unexpected error');
                 done();
             }).catch(done);
         })
