@@ -114,7 +114,9 @@ _.extend(DataSource.prototype, {
 
     /**
      * Returns a list of events of the specified sport id, ordered by the pos property.
+     * If no sport is found will return false.
      * @param  {Object} options
+     * @param  {Number} options.sportId Will return the events of the sport id specified here.
      * @param  {Boolean} [options.forceRefresh=false] If set to true it will make a refresh before returning
      *                                                the data.
      * @return {Q} Returns a Q promise that resolves to an array with several events' data.
