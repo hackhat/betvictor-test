@@ -2,6 +2,8 @@ var express    = require('express');
 var DataSource = require('./DataSource');
 var settings   = require('./settings')();
 var Q          = require('q');
+var _          = require('lodash');
+
 
 
 
@@ -16,14 +18,18 @@ var Q          = require('q');
  *                  data.forceRefresh : a function that can be called to refresh DataSource's data.
  *                                      Returns a promise.
  */
+var noop = function(){};
 module.exports = function(options, cb){
+    options = _.extend({
+        onRefresh : noop
+    }, options)
     var deferred = Q.defer();
     var app      = express();
 
 
 
     var dataSource = new DataSource({
-        url: settings.dataSourceUrl
+        url : settings.dataSourceUrl
     });
 
 
@@ -46,8 +52,20 @@ module.exports = function(options, cb){
 
 
     var forceRefresh = function(){
-        return dataSource.refresh();
+        var promise = dataSource.refresh()
+        options.onRefresh(promise)
+        return promise;
     }
+
+
+
+    setInterval(function(){
+        console.log('Refresh DataSource');
+        console.log(new Date());
+        forceRefresh().then(function(){
+            console.log('DataSource refreshed')
+        });
+    }, 5 * 60 * 1000)
 
 
 
@@ -56,10 +74,7 @@ module.exports = function(options, cb){
     // reach a server in a null state.
     forceRefresh().then(function(){
         deferred.resolve({
-            app          : app,
-            forceRefresh : function(){
-                return forceRefresh();
-            }
+            app : app,
         })
     }).catch(function(err){
         deferred.reject(err);
