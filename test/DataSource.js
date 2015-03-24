@@ -37,12 +37,12 @@ describe('Data source', function(){
 
 
     var stubRequestWithCorrectData = function(){
-        var stub = __sandbox.stub(request, 'get');
-        stub.withArgs(appSettings.dataSourceUrl)
-            .onCall(0)
-                .yieldsAsync(void 0, {statusCode: 200}, JSON.stringify(liveData_day0))
-            .onCall(1)
-                .yieldsAsync(void 0, {statusCode: 200}, JSON.stringify(liveData_day1))
+        __sandbox.stub(request, 'get')
+            .withArgs(appSettings.dataSourceUrl)
+                .onCall(0)
+                    .yieldsAsync(void 0, {statusCode: 200}, JSON.stringify(liveData_day0))
+                .onCall(1)
+                    .yieldsAsync(void 0, {statusCode: 200}, JSON.stringify(liveData_day1));
     }
 
 
@@ -85,6 +85,23 @@ describe('Data source', function(){
             dataSource.getData({forceRefresh: true}).then(function(data){
                 expect(data).to.be.instanceof(Array);
                 expect(data).to.have.length.above(0);
+                done();
+            }).catch(function(err){
+                done(err);
+            });
+        })
+
+
+
+        it('should not make unnecessary API calls', function(done){
+            stubRequestWithCorrectData();
+            dataSource.getData({forceRefresh: true}).then(function(data){
+                expect(data).to.be.ok;
+                expect(request.get.callCount).to.be.equal(1);
+                return dataSource.getData();
+            }).then(function(data){
+                expect(data).to.be.ok;
+                expect(request.get.callCount).to.be.equal(1);
                 done();
             }).catch(function(err){
                 done(err);
@@ -150,7 +167,7 @@ describe('Data source', function(){
 
 
 
-    describe.only('.refresh()', function(){
+    describe('.refresh()', function(){
 
 
 
