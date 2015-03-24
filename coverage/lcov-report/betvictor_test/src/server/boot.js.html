@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for betvictor_test\gulpfile.js</title>
+    <title>Code coverage report for betvictor_test\src\server\boot.js</title>
     <meta charset="utf-8">
 
-    <link rel="stylesheet" href="../prettify.css">
+    <link rel="stylesheet" href="../../../prettify.css">
 
     <style>
         body, html {
@@ -196,23 +196,23 @@
 </head>
 <body>
 <div class="header high">
-    <h1>Code coverage report for <span class="entity">betvictor_test\gulpfile.js</span></h1>
+    <h1>Code coverage report for <span class="entity">betvictor_test\src\server\boot.js</span></h1>
     <h2>
         
-        Statements: <span class="metric">100% <small>(12 / 12)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Statements: <span class="metric">100% <small>(29 / 29)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
         Branches: <span class="metric">100% <small>(0 / 0)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Functions: <span class="metric">100% <small>(0 / 0)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(12 / 12)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Lines: <span class="metric">100% <small>(12 / 12)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">100% <small>(28 / 28)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
     </h2>
-    <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">betvictor_test\</a> &#187; gulpfile.js</div>
+    <div class="path"><a href="../../../index.html">All files</a> &#187; <a href="index.html">betvictor_test\src\server\</a> &#187; boot.js</div>
 </div>
 <div class="body">
 <pre><table class="coverage">
@@ -263,7 +263,42 @@
 45
 46
 47
-48</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -272,35 +307,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -308,54 +316,142 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">6</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">var webpack = require('webpack');
-var webpackConfig = require('tottys-project').webpackConfig({
-    rootPath: __dirname,
-    overrideUnderscoreWithLodash: false,
-    styles: {
-        enabled: false
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">16</span>
+<span class="cline-any cline-yes">16</span>
+<span class="cline-any cline-yes">16</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">var express    = require('express');
+var DataSource = require('./DataSource');
+var settings   = require('./settings')();
+var Q          = require('q');
+var _          = require('lodash');
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+/**
+ * @class server.boot
+ * Returns an object with data about the server.
+ * Note: this will not make the server to listen on any port.
+ * @param  {Object}   options
+ * @return {Q} Returns a promise with data about the server and has the following format:
+ *                  data.app          : is the express server instance (not yet listening to any port)
+ *                  data.forceRefresh : a function that can be called to refresh DataSource's data.
+ *                                      Returns a promise.
+ */
+var noop = function(){};
+module.exports = function(options, cb){
+    options = _.extend({
+        onRefresh : noop
+    }, options)
+    var deferred = Q.defer();
+    var app      = express();
+&nbsp;
+&nbsp;
+&nbsp;
+    var dataSource = new DataSource({
+        url : settings.dataSourceUrl
+    });
+&nbsp;
+&nbsp;
+&nbsp;
+    app.get('/api/sports', function(req, res){
+        dataSource.getSports().then(function(sports){
+            res.status(200).json(sports);
+        })
+    });
+&nbsp;
+&nbsp;
+&nbsp;
+    app.get('/api/sports/:sportId', function(req, res){
+        var sportId = parseInt(req.params.sportId);
+        dataSource.getEvents({sportId: sportId}).then(function(events){
+            res.status(200).json(events);
+        })
+    });
+&nbsp;
+&nbsp;
+&nbsp;
+    var forceRefresh = function(){
+        var promise = dataSource.refresh();
+        options.onRefresh(promise);
+        return promise;
     }
-})
-&nbsp;
-var path = require('path');
-webpackConfig.resolve.alias['test'] = path.join(__dirname, './test');
-&nbsp;
-&nbsp;
-// highcharts config
-webpackConfig.module.loaders.push({
-    test   : /standalone-framework\.js$/,
-    loader : "exports?HighchartsAdapter"
-})
-webpackConfig.module.loaders.push({
-    test   : /highcharts.src.js$/,
-    loader : "exports?Highcharts&amp;imports?HighchartsAdapter=HighchartsAdapter"
-})
-webpackConfig.module.loaders.push({
-    test   : /highstock.src.js$/,
-    loader : "exports?Highcharts&amp;imports?HighchartsAdapter=HighchartsAdapter"
-})
-webpackConfig.resolve.alias.highcharts = 'otherModules/highcharts/highcharts-webpack.js';
-webpackConfig.resolve.alias.highstock = 'otherModules/highcharts/highstock-webpack.js';
 &nbsp;
 &nbsp;
 &nbsp;
-webpackConfig.plugins.push(
-   //  new webpack.ProvidePlugin({
-   //     'standalone-framework' : "HighchartsAdapter",
-   // })
-)
+    setInterval(function(){
+        forceRefresh().then(function(){});
+    }, 5 * 60 * 1000)
 &nbsp;
-module.exports = require('tottys-project').gulpfile({
-    rootPath      : __dirname,
-    webpackConfig : webpackConfig,
-    gulp          : require('gulp'),
-    webpack       : webpack,
-});
 &nbsp;
-module.exports = {
-    webpackConfig: webpackConfig
+&nbsp;
+    // The first time the app startup needs to refresh the dataSource.
+    // In this way when you reach the server is in a proper state and you never
+    // reach a server in a null state.
+    forceRefresh().then(function(){
+        deferred.resolve({
+            app : app
+        })
+    }).catch(function(err){
+        deferred.reject(err);
+    })
+    return deferred.promise;
 }
 &nbsp;</pre></td></tr>
 </table></pre>
@@ -365,7 +461,7 @@ module.exports = {
     <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Mar 24 2015 14:14:22 GMT+0000 (Hora padrão de GMT)</div>
 </div>
 
-<script src="../prettify.js"></script>
+<script src="../../../prettify.js"></script>
 
 <script src="https://yui-s.yahooapis.com/3.6.0/build/yui/yui-min.js"></script>
 <script>
