@@ -216,4 +216,43 @@ describe('Data source', function(){
 
 
 
+    describe('.getDataVersion()', function(){
+
+
+
+        it('should be initially empty', function(done){
+            stubRequestWithCorrectData();
+            expect(dataSource.getDataVersion()).to.be.undefined;
+            done();
+        })
+
+
+
+        it('should only change when new data is fetched', function(done){
+            stubRequestWithCorrectData();
+            dataSource.refresh()
+            .then(function(){
+                return dataSource.getData();
+            })
+            .then(function(data){
+                expect(dataSource.getDataVersion()).to.be.equal('74865492370001_acbe0dd98_en_2_1');
+                return dataSource.refresh();
+            })
+            .then(function(){
+                return dataSource.getData();
+            })
+            .then(function(data){
+                expect(dataSource.getDataVersion()).to.be.equal('74891317750000_690450538_en_2_1');
+                done();
+            }).catch(function(err){
+                done(err);
+            });
+        })
+
+
+
+    })
+
+
+
 })

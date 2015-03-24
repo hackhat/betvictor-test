@@ -24,6 +24,12 @@ var DataSource = function(options){
     this.__data = [];
 
     /**
+     * Stores the current version of the data.
+     * @type {String}
+     */
+    this.__dataVersion = void 0;
+
+    /**
      * Url which will be used to get data.
      * @type {String}
      * @private
@@ -36,6 +42,16 @@ var DataSource = function(options){
 
 
 _.extend(DataSource.prototype, {
+
+
+
+    /**
+     * Returns the current data version.
+     * @return {String} [description]
+     */
+    getDataVersion: function(){
+        return this.__dataVersion;
+    },
 
 
 
@@ -80,7 +96,8 @@ _.extend(DataSource.prototype, {
             }catch(err){
                 return deferred.reject(new Error('Invalid JSON'));
             }
-            this.__data = data.sports;
+            this.__data        = data.sports;
+            this.__dataVersion = data.version;
             deferred.resolve();
         }.bind(this)).catch(function(err){
             deferred.reject(err);
