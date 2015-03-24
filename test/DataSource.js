@@ -119,4 +119,24 @@ describe('Data source', function(){
 
 
 
+    it('should throw "Invalid JSON" error if response status code is not 200', function(done){
+        var invalidJSONBody = 'sa';
+        __sandbox.stub(request, 'get')
+            .withArgs(appSettings.dataSourceUrl)
+            .yieldsAsync(void 0, {statusCode: 200}, invalidJSONBody);
+        var DataSource = require('server/DataSource');
+        var dataSource = new DataSource({
+            url: appSettings.dataSourceUrl
+        });
+        dataSource.getData({forceRefresh: true}).then(function(data){
+            done(new Error('Should throw an error.'));
+        }).catch(function(err){
+            expect(err).to.be.ok;
+            expect(err.message).to.be.equal('Invalid JSON');
+            done();
+        });
+    })
+
+
+
 })
