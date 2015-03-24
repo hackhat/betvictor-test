@@ -37,10 +37,12 @@ describe('Data source', function(){
 
 
     var stubRequestWithCorrectData = function(){
-        __sandbox.stub(request, 'get')
-            .withArgs(appSettings.dataSourceUrl)
-            .yieldsAsync(void 0, {statusCode: 200}, JSON.stringify(liveData_day0))
-                .onFirstCall()
+        var stub = __sandbox.stub(request, 'get');
+        stub.withArgs(appSettings.dataSourceUrl)
+            .onCall(0)
+                .yieldsAsync(void 0, {statusCode: 200}, JSON.stringify(liveData_day0))
+            .onCall(1)
+                .yieldsAsync(void 0, {statusCode: 200}, JSON.stringify(liveData_day1))
     }
 
 
@@ -148,7 +150,7 @@ describe('Data source', function(){
 
 
 
-    describe('.refresh()', function(){
+    describe.only('.refresh()', function(){
 
 
 
@@ -161,6 +163,7 @@ describe('Data source', function(){
             .then(function(data){
                 expect(data).to.be.instanceof(Array);
                 expect(data).to.have.length.above(0);
+                expect(data[0].events[0].id).to.be.equal(266701710);
                 done();
             }).catch(function(err){
                 done(err);
@@ -169,20 +172,27 @@ describe('Data source', function(){
 
 
 
-        it.only('should overwrite previous data loaded', function(done){
+        it('should overwrite previous data loaded', function(done){
             stubRequestWithCorrectData();
             dataSource.refresh()
             .then(function(){
                 return dataSource.getData();
             })
             .then(function(data){
-                expect(data).to.be.instanceof(Array);
-                expect(data).to.have.length.above(0);
+                expect(data[0].events[0].id).to.be.equal(266701710);
+                return dataSource.refresh();
+            })
+            .then(function(){
+                return dataSource.getData();
+            })
+            .then(function(data){
+                expect(data[0].events[0].id).to.be.equal(27603710);
                 done();
             }).catch(function(err){
                 done(err);
             });
         })
+
 
 
     })
