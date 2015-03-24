@@ -52,8 +52,8 @@ module.exports = function(options, cb){
 
 
     var forceRefresh = function(){
-        var promise = dataSource.refresh()
-        options.onRefresh(promise)
+        var promise = dataSource.refresh();
+        options.onRefresh(promise);
         return promise;
     }
 
@@ -70,7 +70,7 @@ module.exports = function(options, cb){
     // reach a server in a null state.
     forceRefresh().then(function(){
         deferred.resolve({
-            app : app,
+            app : app
         })
     }).catch(function(err){
         deferred.reject(err);
