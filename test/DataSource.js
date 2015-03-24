@@ -104,7 +104,7 @@ describe('Data source', function(){
         var errorName = 'Stub error.';
         __sandbox.stub(request, 'get')
             .withArgs(appSettings.dataSourceUrl)
-            .yieldsAsync(void 0, {statusCode: 404});
+            .yieldsAsync(void 0, {statusCode: 404}, void 0);
         var DataSource = require('server/DataSource');
         var dataSource = new DataSource({
             url: appSettings.dataSourceUrl
@@ -114,7 +114,7 @@ describe('Data source', function(){
         }).catch(function(err){
             expect(err).to.be.ok;
             expect(err.message).to.be.equal('Status code not 200.');
-            done(err);
+            done();
         });
     })
 
