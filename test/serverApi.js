@@ -67,6 +67,81 @@ describe('Server API', function(){
 
 
 
+    describe('cache', function(){
+
+
+
+        // Add should use cache
+        // This is a very tricky test. In order to check whenever the
+        // server serves cached data with max 5 minutes age we need to use the
+        // fake timers.
+        it('should use cache for 5 minutes', function(done){
+            stubRequestWithCorrectData();
+            createApp().then(function(){
+                __sandbox.clock.tick(refreshInterval - 1);
+                var deferred  = Q.defer();
+                supertest(app)
+                    .get('/api/sports')
+                    .expect('Content-Type', /application\/json/)
+                    .expect(function(res){
+                        var sports = res.body;
+                        // By comparing with liveData_day0 we know that it loaded only once.
+                        expect(sports).to.deep.equals(_.sortBy(liveData_day0.sports, 'pos'));
+                    })
+                    .expect(200)
+                    .end(function(err, res){
+                        if(err) return deferred.reject(err);
+                        deferred.resolve();
+                    });
+                return deferred.promise;
+            }).then(function(){
+                done();
+            }).catch(done);
+        })
+
+
+
+        it('should refresh data after 5 minutes', function(done){
+            stubRequestWithCorrectData();
+            var refreshPromise;
+            var onRefresh = function(promise){
+                refreshPromise = promise;
+            }
+            createApp({onRefresh: onRefresh}).then(function(){
+                // Deletes the previous promise. Normally this should be the first promise which
+                // is not required here. We just care about the second one.
+                refreshPromise = void 0;
+                __sandbox.clock.tick(refreshInterval + 1);
+                if(!refreshPromise) throw new Error('Refresh promise not yet present.')
+                // Only waits on the next promise.
+                return refreshPromise;
+            }).then(function(){
+                var deferred  = Q.defer();
+                supertest(app)
+                    .get('/api/sports')
+                    .expect('Content-Type', /application\/json/)
+                    .expect(function(res){
+                        var sports = res.body;
+                        // By comparing with liveData_day1 we know that it loaded only twice.
+                        expect(sports).to.deep.equals(_.sortBy(liveData_day1.sports, 'pos'));
+                    })
+                    .expect(200)
+                    .end(function(err, res){
+                        if(err) return deferred.reject(err);
+                        deferred.resolve();
+                    });
+                return deferred.promise;
+            }).then(function(){
+                done();
+            }).catch(done);
+        })
+
+
+
+    })
+
+
+
     describe('/api/sports', function(){
 
 
@@ -86,59 +161,6 @@ describe('Server API', function(){
                         if(err) throw err;
                         done();
                     });
-            }).catch(done);
-        })
-
-
-        // Add should use cache
-        // This is a very tricky test. In order to check whenever the
-        // server serves cached data with max 5 minutes age we need to use the
-        // fake timers.
-        it('should use cache for 5 minutes', function(done){
-            stubRequestWithCorrectData();
-            var refreshPromise;
-            var onRefresh = function(promise){
-                refreshPromise = promise;
-            }
-            createApp({onRefresh: onRefresh}).then(function(){
-                __sandbox.clock.tick(refreshInterval - 1);
-                var deferred  = Q.defer();
-                supertest(app)
-                    .get('/api/sports')
-                    .expect('Content-Type', /application\/json/)
-                    .expect(function(res){
-                        var sports = res.body;
-                        expect(sports).to.deep.equals(_.sortBy(liveData_day0.sports, 'pos'));
-                    })
-                    .expect(200)
-                    .end(function(err, res){
-                        if(err) return deferred.reject(err);
-                        deferred.resolve();
-                    });
-                return deferred.promise;
-            }).then(function(){
-                // Deletes the previous promise.
-                refreshPromise = void 0;
-                __sandbox.clock.tick(2);
-                // Only waits on the next promise.
-                return refreshPromise;
-            }).then(function(){
-                var deferred  = Q.defer();
-                supertest(app)
-                    .get('/api/sports')
-                    .expect('Content-Type', /application\/json/)
-                    .expect(function(res){
-                        var sports = res.body;
-                        expect(sports).to.deep.equals(_.sortBy(liveData_day1.sports, 'pos'));
-                    })
-                    .expect(200)
-                    .end(function(err, res){
-                        if(err) return deferred.reject(err);
-                        deferred.resolve();
-                    });
-                return deferred.promise;
-            }).then(function(){
-                done();
             }).catch(done);
         })
 
