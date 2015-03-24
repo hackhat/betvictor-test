@@ -91,10 +91,12 @@ describe('Data source', function(){
         });
         dataSource.getData({forceRefresh: true}).then(function(data){
             done(new Error('Should throw an error.'));
-        }).catch(function(err){
+        }, function(err){
             expect(err).to.be.ok;
             expect(err.message).to.be.equal(errorName);
             done();
+        }).catch(function(err){
+            done(err);
         });
     })
 
@@ -110,10 +112,12 @@ describe('Data source', function(){
         });
         dataSource.getData({forceRefresh: true}).then(function(data){
             done(new Error('Should throw an error.'));
-        }).catch(function(err){
+        }, function(err){
             expect(err).to.be.ok;
             expect(err.message).to.be.equal('Status code not 200');
             done();
+        }).catch(function(err){
+            done(err);
         });
     })
 
@@ -130,10 +134,11 @@ describe('Data source', function(){
         });
         dataSource.getData({forceRefresh: true}).then(function(data){
             done(new Error('Should throw an error.'));
-        }).catch(function(err){
+        }, function(err){
             expect(err).to.be.ok;
             expect(err.message).to.be.equal('Invalid JSON');
-            done();
+        }).catch(function(err){
+            done(err);
         });
     })
 
