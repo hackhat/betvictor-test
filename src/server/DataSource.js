@@ -133,7 +133,8 @@ _.extend(DataSource.prototype, {
             forceRefresh: options.forceRefresh
         }).then(function(sports){
             var sport = _.findWhere(sports, {id: options.sportId});
-            deferred.resolve(sport.events);
+            var events = sport ? sport.events : false;
+            deferred.resolve(events);
         }).catch(function(err){
             deferred.reject(err);
         })

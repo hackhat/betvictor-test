@@ -307,7 +307,7 @@ describe('Data source', function(){
 
         // @todo: Confirm assumption.
         // Here I assume that events should be also ordered by the 'pos' property, like sports.
-        it('should return sport\'s events ordered by \'pos\' property', function(done){
+        it('should return sports\' events ordered by \'pos\' property', function(done){
             stubRequestWithCorrectData();
             var footballSportId = 100
             dataSource.getEvents({sportId: footballSportId, forceRefresh: true}).then(function(events){
@@ -326,8 +326,20 @@ describe('Data source', function(){
 
 
 
+        it('should return false if sport with id specified is not found', function(done){
+            stubRequestWithCorrectData();
+            dataSource.getEvents({sportId: 'wrongId', forceRefresh: true}).then(function(events){
+                expect(events).to.be.false;
+                done();
+            }).catch(function(err){
+                done(err);
+            });
+        })
+
+
+
         it('should return a \'Sport id should be specified\' error if no sport id specified', function(done){
-            stubRequestWithUnexpectedError();
+            stubRequestWithCorrectData();
             dataSource.getEvents({sportId: void 0, forceRefresh: true}).then(function(events){
                 done(new Error('Should return an error.'));
             }, function(err){
