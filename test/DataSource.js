@@ -137,6 +137,7 @@ describe('Data source', function(){
         }, function(err){
             expect(err).to.be.ok;
             expect(err.message).to.be.equal('Invalid JSON');
+            done();
         }).catch(function(err){
             done(err);
         });

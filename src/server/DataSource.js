@@ -75,7 +75,11 @@ _.extend(DataSource.prototype, {
             if(res.statusCode !== 200){
                 return deferred.reject(new Error('Status code not 200'));
             }
-            var data = JSON.parse(body);
+            try{
+                var data = JSON.parse(body);
+            }catch(err){
+                return deferred.reject(new Error('Invalid JSON'));
+            }
             this.__data = data.sports;
             deferred.resolve();
         }.bind(this)).catch(function(err){
