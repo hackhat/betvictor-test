@@ -98,17 +98,32 @@ describe('Server API', function(){
             stubRequestWithCorrectData();
             var refreshPromise;
             var onRefresh = function(promise){
-                console.log('refresh request');
                 refreshPromise = promise;
             }
             createApp({onRefresh: onRefresh}).then(function(){
+                __sandbox.clock.tick(refreshInterval - 1);
+                var deferred  = Q.defer();
+                supertest(app)
+                    .get('/api/sports')
+                    .expect('Content-Type', /application\/json/)
+                    .expect(function(res){
+                        var sports = res.body;
+                        expect(sports).to.deep.equals(_.sortBy(liveData_day0.sports, 'pos'));
+                    })
+                    .expect(200)
+                    .end(function(err, res){
+                        if(err) return deferred.reject(err);
+                        deferred.resolve();
+                    });
+                return deferred.promise;
+            }).then(function(){
                 // Deletes the previous promise.
                 refreshPromise = void 0;
-                __sandbox.clock.tick(refreshInterval + 1);
+                __sandbox.clock.tick(2);
                 // Only waits on the next promise.
                 return refreshPromise;
             }).then(function(){
-                console.log('after first tick')
+                var deferred  = Q.defer();
                 supertest(app)
                     .get('/api/sports')
                     .expect('Content-Type', /application\/json/)
@@ -118,9 +133,12 @@ describe('Server API', function(){
                     })
                     .expect(200)
                     .end(function(err, res){
-                        if(err) throw err;
-                        done();
+                        if(err) return deferred.reject(err);
+                        deferred.resolve();
                     });
+                return deferred.promise;
+            }).then(function(){
+                done();
             }).catch(done);
         })
 
