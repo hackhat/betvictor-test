@@ -176,6 +176,27 @@ describe('Server API', function(){
 
 
 
+    it('should not start if first refresh has any error', function(done){
+        // This stub returns correct data the first time and then returns an internal error.
+        __sandbox.stub(request, 'get')
+            .withArgs(appSettings.dataSourceUrl)
+            .yieldsAsync(new Error('Unexpected error'));
+
+        var refreshPromise;
+        var onRefresh = function(promise){
+            refreshPromise = promise;
+        }
+        createApp({onRefresh: onRefresh}).then(function(){
+            done(new Error('Should return an error.'));
+        }, function(err){
+            expect(err).to.be.ok;
+            expect(err.message).to.be.equal('Unexpected error');
+            done();
+        }).catch(done);
+    })
+
+
+
     describe('/api/sports', function(){
 
 
