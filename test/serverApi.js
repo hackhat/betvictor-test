@@ -13,12 +13,14 @@ var liveData_day1 = require('test/data/liveData_day1.json');
 
 
 
-describe.only('Server API', function(){
+describe('Server API', function(){
 
 
 
     var __sandbox;
     var app;
+    var footballSportId      = 100;
+    var firstFootballEventId = 266701710;
 
 
 
@@ -62,6 +64,31 @@ describe.only('Server API', function(){
                     var sports = res.body;
                     expect(sports).to.be.instanceof(Array);
                     expect(sports).to.have.length(16);
+                    done();
+                });
+        })
+
+
+
+    })
+
+
+
+    describe('/api/sports/:sportId', function(){
+
+
+
+        it('should return sport\'s events', function(done){
+            stubRequestWithCorrectData();
+            supertest(app)
+                .get('/api/sports/' + footballSportId)
+                .expect('Content-Type', /application\/json/)
+                .expect(200)
+                .end(function(err, res){
+                    if(err) throw err;
+                    var sports = res.body;
+                    expect(sports).to.be.instanceof(Array);
+                    expect(sports).to.have.length(11);
                     done();
                 });
         })
