@@ -5,6 +5,7 @@
   "author": "hackhat",
   "dependencies": {
     "enhanced-require": "^0.5.0-beta6",
+    "express": "^4.12.3",
     "extract-text-webpack-plugin": "^0.3.8",
     "gulp": "^3.8.11",
     "gulp-clean": "^0.3.1",
@@ -28,6 +29,7 @@
     "hide-stack-frames-from": "^1.0.0",
     "istanbul": "^0.3.8",
     "mocha": "^2.2.1",
-    "sinon": "^1.14.1"
+    "sinon": "^1.14.1",
+    "supertest": "^0.15.0"
   }
 }
