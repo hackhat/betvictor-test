@@ -8,6 +8,13 @@ var request = require('request');
 /**
  * Data source contains the data about sports and its events.
  *
+ * Rationale:
+ *     All the methods that return actual data uses promises. The reason behind this
+ *     decision is to make this library easy to be replaced with a more powerful solution.
+ *     For example in the future might be required to create a DataSource that makes a
+ *     database query, therefore the data can't be returned right away, nor loaded all
+ *     with the `refresh` method. In this case each method will make a database query.
+ *
  * @param {Object} options
  * @param {String} options.url The url to the json api.
  */
@@ -97,6 +104,36 @@ _.extend(DataSource.prototype, {
             forceRefresh: options.forceRefresh
         }).then(function(data){
             deferred.resolve(_.sortBy(data, 'pos'));
+        }).catch(function(err){
+            deferred.reject(err);
+        })
+        return deferred.promise;
+    },
+
+
+
+    /**
+     * Returns a list of events of the specified sport id, ordered by the pos property.
+     * @param  {Object} options
+     * @param  {Boolean} [options.forceRefresh=false] If set to true it will make a refresh before returning
+     *                                                the data.
+     * @return {Q} Returns a Q promise that resolves to an array with several events' data.
+     */
+    getEvents: function(options){
+        options = _.extend({
+            sportId      : void 0,
+            forceRefresh : false
+        }, options)
+        var deferred = Q.defer();
+        if(options.sportId === void 0){
+            deferred.reject(new Error('Sport id should be specified'));
+            return deferred.promise;
+        }
+        this.getSports({
+            forceRefresh: options.forceRefresh
+        }).then(function(sports){
+            var sport = _.findWhere(sports, {id: options.sportId});
+            deferred.resolve(sport.events);
         }).catch(function(err){
             deferred.reject(err);
         })

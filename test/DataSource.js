@@ -301,4 +301,64 @@ describe('Data source', function(){
 
 
 
+    describe('.getEvents()', function(){
+
+
+
+        // @todo: Confirm assumption.
+        // Here I assume that events should be also ordered by the 'pos' property, like sports.
+        it('should return sport\'s events ordered by \'pos\' property', function(done){
+            stubRequestWithCorrectData();
+            var footballSportId = 100
+            dataSource.getEvents({sportId: footballSportId, forceRefresh: true}).then(function(events){
+                expect(events).to.be.instanceof(Array);
+                expect(events).to.have.length(11);
+                var sortedEvents = _.sortBy(events, 'pos');
+                events.forEach(function(event, i){
+                    var expectedEvent = sortedEvents[i];
+                    expect(event.id).to.be.equal(expectedEvent.id);
+                })
+                done();
+            }).catch(function(err){
+                done(err);
+            });
+        })
+
+
+
+        it('should return a \'Sport id should be specified\' error if no sport id specified', function(done){
+            stubRequestWithUnexpectedError();
+            dataSource.getEvents({sportId: void 0, forceRefresh: true}).then(function(events){
+                done(new Error('Should return an error.'));
+            }, function(err){
+                expect(err).to.be.ok;
+                expect(err.message).to.be.equal('Sport id should be specified');
+                done();
+            }).catch(function(err){
+                done(err);
+            });
+        })
+
+
+
+        it('should return an error if an unexpected error happens', function(done){
+            stubRequestWithUnexpectedError();
+            var footballSportId = 100
+            dataSource.getEvents({sportId: footballSportId, forceRefresh: true}).then(function(events){
+                done(new Error('Should return an error.'));
+            }, function(err){
+                expect(err).to.be.ok;
+                expect(err.message).to.be.equal('Unexpected error');
+                done();
+            }).catch(function(err){
+                done(err);
+            });
+        })
+
+
+
+    })
+
+
+
 })
