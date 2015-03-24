@@ -88,11 +88,11 @@ describe('Data source', function(){
 
 
 
-        it('should return some sports if using force refresh', function(done){
+        it('should return sports if using force refresh', function(done){
             stubRequestWithCorrectData();
             dataSource.getData({forceRefresh: true}).then(function(data){
                 expect(data).to.be.instanceof(Array);
-                expect(data).to.have.length.above(0);
+                expect(data).to.have.length(16);
                 done();
             }).catch(function(err){
                 done(err);
@@ -184,7 +184,7 @@ describe('Data source', function(){
             })
             .then(function(data){
                 expect(data).to.be.instanceof(Array);
-                expect(data).to.have.length.above(0);
+                expect(data).to.have.length(16);
                 expect(data[0].events[0].id).to.be.equal(266701710);
                 done();
             }).catch(function(err){
@@ -268,7 +268,7 @@ describe('Data source', function(){
             stubRequestWithCorrectData();
             dataSource.getSports({forceRefresh: true}).then(function(sports){
                 expect(sports).to.be.instanceof(Array);
-                expect(sports).to.have.length.above(0);
+                expect(sports).to.have.length(16);
                 var sortedSports = _.sortBy(sports, 'pos');
                 sports.forEach(function(sport, i){
                     var expectedSport = sortedSports[i];
