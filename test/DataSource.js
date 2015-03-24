@@ -47,6 +47,14 @@ describe('Data source', function(){
 
 
 
+    var stubRequestWithUnexpectedError = function(){
+        __sandbox.stub(request, 'get')
+            .withArgs(appSettings.dataSourceUrl)
+            .yieldsAsync(new Error('Unexpected error'));
+    }
+
+
+
     describe('.getData()', function(){
 
 
@@ -110,16 +118,13 @@ describe('Data source', function(){
 
 
 
-        it('should throw an unexpected error happens', function(done){
-            var errorName = 'Stub error';
-            __sandbox.stub(request, 'get')
-                .withArgs(appSettings.dataSourceUrl)
-                .yieldsAsync(new Error('Stub error'));
+        it('should return an error if an unexpected error happens', function(done){
+            stubRequestWithUnexpectedError();
             dataSource.getData({forceRefresh: true}).then(function(data){
-                done(new Error('Should throw an error.'));
+                done(new Error('Should return an error.'));
             }, function(err){
                 expect(err).to.be.ok;
-                expect(err.message).to.be.equal(errorName);
+                expect(err.message).to.be.equal('Unexpected error');
                 done();
             }).catch(function(err){
                 done(err);
@@ -128,12 +133,12 @@ describe('Data source', function(){
 
 
 
-        it('should throw "Status code not 200" error if response status code is not 200', function(done){
+        it('should return "Status code not 200" error if response status code is not 200', function(done){
             __sandbox.stub(request, 'get')
                 .withArgs(appSettings.dataSourceUrl)
                 .yieldsAsync(void 0, {statusCode: 404}, void 0);
             dataSource.getData({forceRefresh: true}).then(function(data){
-                done(new Error('Should throw an error.'));
+                done(new Error('Should return an error.'));
             }, function(err){
                 expect(err).to.be.ok;
                 expect(err.message).to.be.equal('Status code not 200');
@@ -145,13 +150,13 @@ describe('Data source', function(){
 
 
 
-        it('should throw "Invalid JSON" error if response status code is not 200', function(done){
+        it('should return "Invalid JSON" error if response status code is not 200', function(done){
             var invalidJSONBody = 'sa';
             __sandbox.stub(request, 'get')
                 .withArgs(appSettings.dataSourceUrl)
                 .yieldsAsync(void 0, {statusCode: 200}, invalidJSONBody);
             dataSource.getData({forceRefresh: true}).then(function(data){
-                done(new Error('Should throw an error.'));
+                done(new Error('Should return an error.'));
             }, function(err){
                 expect(err).to.be.ok;
                 expect(err.message).to.be.equal('Invalid JSON');
@@ -255,7 +260,7 @@ describe('Data source', function(){
 
 
 
-    describe.only('.getSports()', function(){
+    describe('.getSports()', function(){
 
 
 
@@ -269,6 +274,21 @@ describe('Data source', function(){
                     var expectedSport = sortedSports[i];
                     expect(sport.id).to.be.equal(expectedSport.id);
                 })
+                done();
+            }).catch(function(err){
+                done(err);
+            });
+        })
+
+
+
+        it('should return an error if an unexpected error happens', function(done){
+            stubRequestWithUnexpectedError();
+            dataSource.getSports({forceRefresh: true}).then(function(sports){
+                done(new Error('Should return an error.'));
+            }, function(err){
+                expect(err).to.be.ok;
+                expect(err.message).to.be.equal('Unexpected error');
                 done();
             }).catch(function(err){
                 done(err);
