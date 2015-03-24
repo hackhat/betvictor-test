@@ -255,4 +255,30 @@ describe('Data source', function(){
 
 
 
+    describe.only('.getSports()', function(){
+
+
+
+        it('should return sports ordered by \'pos\' property', function(done){
+            stubRequestWithCorrectData();
+            dataSource.getSports({forceRefresh: true}).then(function(sports){
+                expect(sports).to.be.instanceof(Array);
+                expect(sports).to.have.length.above(0);
+                var sortedSports = _.sortBy(sports, 'pos');
+                sports.forEach(function(sport, i){
+                    var expectedSport = sortedSports[i];
+                    expect(sport.id).to.be.equal(expectedSport.id);
+                })
+                done();
+            }).catch(function(err){
+                done(err);
+            });
+        })
+
+
+
+    })
+
+
+
 })

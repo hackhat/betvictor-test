@@ -82,6 +82,30 @@ _.extend(DataSource.prototype, {
 
 
     /**
+     * Returns a list of sports ordered by the pos property.
+     * @param  {Object} options
+     * @param  {Boolean} [options.forceRefresh=false] If set to true it will make a refresh before returning
+     *                                                the data.
+     * @return {Q} Returns a Q promise that resolves to an array with several sports' data.
+     */
+    getSports: function(options){
+        options = _.extend({
+            forceRefresh: false
+        }, options)
+        var deferred = Q.defer();
+        this.getData({
+            forceRefresh: options.forceRefresh
+        }).then(function(data){
+            deferred.resolve(_.sortBy(data, 'pos'));
+        }).catch(function(err){
+            deferred.reject(err);
+        })
+        return deferred.promise;
+    },
+
+
+
+    /**
      * Refreshes the data of this DataSource.
      * @return {Q} Returns a Q promise.
      */
