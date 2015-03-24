@@ -60,11 +60,7 @@ module.exports = function(options, cb){
 
 
     setInterval(function(){
-        console.log('Refresh DataSource');
-        console.log(new Date());
-        forceRefresh().then(function(){
-            console.log('DataSource refreshed')
-        });
+        forceRefresh().then(function(){});
     }, 5 * 60 * 1000)
 
 
