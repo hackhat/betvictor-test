@@ -100,7 +100,7 @@ describe('Data source', function(){
 
 
 
-    it('should throw an error if response status code is not 200', function(done){
+    it('should throw "Status code not 200" error if response status code is not 200', function(done){
         var errorName = 'Stub error.';
         __sandbox.stub(request, 'get')
             .withArgs(appSettings.dataSourceUrl)
