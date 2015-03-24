@@ -146,6 +146,49 @@ _.extend(DataSource.prototype, {
 
 
     /**
+     * Returns a list of outcomes of the specified sport id and event id.
+     * If no sport or event is found will return false.
+     * @param  {Object} options
+     * @param  {Number} options.sportId Will return the outcomes of the sport id specified here.
+     * @param  {Number} options.eventId Will return the outcomes of the event id specified here.
+     * @param  {Boolean} [options.forceRefresh=false] If set to true it will make a refresh before returning
+     *                                                the data.
+     * @return {Q} Returns a Q promise that resolves to an array with several events' data.
+     */
+    getOutcomes: function(options){
+        options = _.extend({
+            sportId      : void 0,
+            eventId      : void 0,
+            forceRefresh : false
+        }, options)
+        var deferred = Q.defer();
+        if(options.sportId === void 0){
+            deferred.reject(new Error('Sport id should be specified'));
+            return deferred.promise;
+        }
+        if(options.eventId === void 0){
+            deferred.reject(new Error('Event id should be specified'));
+            return deferred.promise;
+        }
+        this.getEvents({
+            sportId      : options.sportId,
+            forceRefresh : options.forceRefresh
+        }).then(function(events){
+            if(events === false){
+                return deferred.resolve(false);
+            }
+            var event = _.findWhere(events, {id: options.eventId});
+            var outcomes = event ? event.outcomes : false;
+            deferred.resolve(outcomes);
+        }).catch(function(err){
+            deferred.reject(err);
+        })
+        return deferred.promise;
+    },
+
+
+
+    /**
      * Refreshes the data of this DataSource.
      * @return {Q} Returns a Q promise.
      */

@@ -307,9 +307,9 @@ describe('Data source', function(){
 
         // @todo: Confirm assumption.
         // Here I assume that events should be also ordered by the 'pos' property, like sports.
-        it('should return sports\' events ordered by \'pos\' property', function(done){
+        it('should return sport\'s events ordered by \'pos\' property', function(done){
             stubRequestWithCorrectData();
-            var footballSportId = 100
+            var footballSportId = 100;
             dataSource.getEvents({sportId: footballSportId, forceRefresh: true}).then(function(events){
                 expect(events).to.be.instanceof(Array);
                 expect(events).to.have.length(11);
@@ -355,8 +355,130 @@ describe('Data source', function(){
 
         it('should return an error if an unexpected error happens', function(done){
             stubRequestWithUnexpectedError();
-            var footballSportId = 100
+            var footballSportId = 100;
             dataSource.getEvents({sportId: footballSportId, forceRefresh: true}).then(function(events){
+                done(new Error('Should return an error.'));
+            }, function(err){
+                expect(err).to.be.ok;
+                expect(err.message).to.be.equal('Unexpected error');
+                done();
+            }).catch(function(err){
+                done(err);
+            });
+        })
+
+
+
+    })
+
+
+
+    describe('.getOutcomes()', function(){
+
+
+
+        it('should return event\'s outcomes', function(done){
+            stubRequestWithCorrectData();
+            var footballSportId = 100;
+            var firstEventId    = 266701710;
+            dataSource.getOutcomes({
+                sportId      : footballSportId,
+                eventId      : firstEventId,
+                forceRefresh : true
+            }).then(function(outcomes){
+                expect(outcomes).to.be.instanceof(Array);
+                expect(outcomes).to.have.length(3);
+                done();
+            }).catch(function(err){
+                done(err);
+            });
+        })
+
+
+
+        it('should return false if sport with id specified is not found', function(done){
+            stubRequestWithCorrectData();
+            var firstEventId = 266701710;
+            dataSource.getOutcomes({
+                sportId      : 'wrongId',
+                eventId      : firstEventId,
+                forceRefresh : true
+            }).then(function(events){
+                expect(events).to.be.false;
+                done();
+            }).catch(function(err){
+                done(err);
+            });
+        })
+
+
+
+        it('should return false if event with id specified is not found', function(done){
+            stubRequestWithCorrectData();
+            var footballSportId = 100;
+            dataSource.getOutcomes({
+                sportId      : footballSportId,
+                eventId      : 'wrongId',
+                forceRefresh : true
+            }).then(function(events){
+                expect(events).to.be.false;
+                done();
+            }).catch(function(err){
+                done(err);
+            });
+        })
+
+
+
+        it('should return a \'Sport id should be specified\' error if no sport id specified', function(done){
+            stubRequestWithCorrectData();
+            var firstEventId    = 266701710;
+            dataSource.getOutcomes({
+                sportId      : void 0,
+                eventId      : firstEventId,
+                forceRefresh : true
+            }).then(function(events){
+                done(new Error('Should return an error.'));
+            }, function(err){
+                expect(err).to.be.ok;
+                expect(err.message).to.be.equal('Sport id should be specified');
+                done();
+            }).catch(function(err){
+                done(err);
+            });
+        })
+
+
+
+        it('should return a \'Event id should be specified\' error if no sport id specified', function(done){
+            stubRequestWithCorrectData();
+            var footballSportId = 100;
+            dataSource.getOutcomes({
+                sportId      : footballSportId,
+                eventId      : void 0,
+                forceRefresh : true
+            }).then(function(events){
+                done(new Error('Should return an error.'));
+            }, function(err){
+                expect(err).to.be.ok;
+                expect(err.message).to.be.equal('Event id should be specified');
+                done();
+            }).catch(function(err){
+                done(err);
+            });
+        })
+
+
+
+        it('should return an error if an unexpected error happens', function(done){
+            stubRequestWithUnexpectedError();
+            var footballSportId = 100;
+            var firstEventId    = 266701710;
+            dataSource.getOutcomes({
+                sportId      : footballSportId,
+                eventId      : firstEventId,
+                forceRefresh : true
+            }).then(function(outcomes){
                 done(new Error('Should return an error.'));
             }, function(err){
                 expect(err).to.be.ok;
