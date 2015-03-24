@@ -22,6 +22,7 @@ describe('Server API', function(){
 
     var __sandbox;
     var app;
+    var refreshInterval      = 5 * 60 * 1000;
     var footballSportId      = 100;
     var firstFootballEventId = 266701710;
 
@@ -29,6 +30,7 @@ describe('Server API', function(){
 
     beforeEach(function(){
         __sandbox = sinon.sandbox.create();
+        __sandbox.useFakeTimers(); // get with __sandbox.clock
     });
 
 
@@ -52,9 +54,9 @@ describe('Server API', function(){
 
 
 
-    var createApp = function(){
+    var createApp = function(options){
         var deferred = Q.defer();
-        createAppFn({}).then(function(data){
+        createAppFn(options).then(function(data){
             app = data.app;
             deferred.resolve();
         }).catch(function(err){
@@ -78,6 +80,41 @@ describe('Server API', function(){
                     .expect(function(res){
                         var sports = res.body;
                         expect(sports).to.deep.equals(_.sortBy(liveData_day0.sports, 'pos'));
+                    })
+                    .expect(200)
+                    .end(function(err, res){
+                        if(err) throw err;
+                        done();
+                    });
+            }).catch(done);
+        })
+
+
+        // Add should use cache
+        // This is a very tricky test. In order to check whenever the
+        // server serves cached data with max 5 minutes age we need to use the
+        // fake timers.
+        it('should use cache for 5 minutes', function(done){
+            stubRequestWithCorrectData();
+            var refreshPromise;
+            var onRefresh = function(promise){
+                console.log('refresh request');
+                refreshPromise = promise;
+            }
+            createApp({onRefresh: onRefresh}).then(function(){
+                // Deletes the previous promise.
+                refreshPromise = void 0;
+                __sandbox.clock.tick(refreshInterval + 1);
+                // Only waits on the next promise.
+                return refreshPromise;
+            }).then(function(){
+                console.log('after first tick')
+                supertest(app)
+                    .get('/api/sports')
+                    .expect('Content-Type', /application\/json/)
+                    .expect(function(res){
+                        var sports = res.body;
+                        expect(sports).to.deep.equals(_.sortBy(liveData_day1.sports, 'pos'));
                     })
                     .expect(200)
                     .end(function(err, res){
