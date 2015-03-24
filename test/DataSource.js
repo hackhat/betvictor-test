@@ -1,10 +1,11 @@
-require         = require('../getWebpackRequire');
-var sinon       = require.originalRequire('sinon'); // Has some issues with enhanced require.
-var expect      = require("chai").expect;
-var request     = require('request');
-var _           = require('lodash');
-var appSettings = require('server/settings')();
-var liveData    = require('test/data/live.json');
+require           = require('../getWebpackRequire');
+var sinon         = require.originalRequire('sinon'); // Has some issues with enhanced require.
+var expect        = require("chai").expect;
+var request       = require('request');
+var _             = require('lodash');
+var appSettings   = require('server/settings')();
+var liveData_day0 = require('test/data/liveData_day0.json');
+var liveData_day1 = require('test/data/liveData_day1.json');
 
 
 
@@ -38,7 +39,8 @@ describe('Data source', function(){
     var stubRequestWithCorrectData = function(){
         __sandbox.stub(request, 'get')
             .withArgs(appSettings.dataSourceUrl)
-            .yieldsAsync(void 0, {statusCode: 200}, JSON.stringify(liveData));
+            .yieldsAsync(void 0, {statusCode: 200}, JSON.stringify(liveData_day0))
+                .onFirstCall()
     }
 
 
@@ -140,6 +142,47 @@ describe('Data source', function(){
             });
         })
 
+
+
+    })
+
+
+
+    describe('.refresh()', function(){
+
+
+
+        it('should load fresh data', function(done){
+            stubRequestWithCorrectData();
+            dataSource.refresh()
+            .then(function(){
+                return dataSource.getData();
+            })
+            .then(function(data){
+                expect(data).to.be.instanceof(Array);
+                expect(data).to.have.length.above(0);
+                done();
+            }).catch(function(err){
+                done(err);
+            });
+        })
+
+
+
+        it.only('should overwrite previous data loaded', function(done){
+            stubRequestWithCorrectData();
+            dataSource.refresh()
+            .then(function(){
+                return dataSource.getData();
+            })
+            .then(function(data){
+                expect(data).to.be.instanceof(Array);
+                expect(data).to.have.length.above(0);
+                done();
+            }).catch(function(err){
+                done(err);
+            });
+        })
 
 
     })
