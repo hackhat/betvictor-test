@@ -1,6 +1,7 @@
 require           = require('../getWebpackRequire');
 var sinon         = require.originalRequire('sinon'); // Has some issues with enhanced require.
 var _             = require('lodash');
+var Q             = require('q');
 var expect        = require("chai").expect;
 var supertest     = require('supertest');
 var request       = require('request');
@@ -51,12 +52,15 @@ describe('Server API', function(){
 
 
 
-    var createApp = function(done){
-        createAppFn({}, function(err, data){
-            if(err) return done(err);
+    var createApp = function(){
+        var deferred = Q.defer();
+        createAppFn({}).then(function(data){
             app = data.app;
-            done();
-        });
+            deferred.resolve();
+        }).catch(function(err){
+            deferred.reject(err);
+        })
+        return deferred.promise;
     }
 
 
@@ -67,7 +71,7 @@ describe('Server API', function(){
 
         it('should return all sports', function(done){
             stubRequestWithCorrectData();
-            createApp(function(){
+            createApp().then(function(){
                 supertest(app)
                     .get('/api/sports')
                     .expect('Content-Type', /application\/json/)
@@ -80,7 +84,7 @@ describe('Server API', function(){
                         if(err) throw err;
                         done();
                     });
-            });
+            }).catch(done);
         })
 
 
@@ -95,7 +99,7 @@ describe('Server API', function(){
 
         it('should return sport\'s events', function(done){
             stubRequestWithCorrectData();
-            createApp(function(){
+            createApp().then(function(){
                 async.eachSeries(liveData_day0.sports, function(sport, cb){
                     supertest(app)
                         .get('/api/sports/' + sport.id)
@@ -111,7 +115,7 @@ describe('Server API', function(){
                 }, function(err){
                     done(err);
                 })
-            })
+            }).catch(done)
         })
 
 
