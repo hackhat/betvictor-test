@@ -6,7 +6,7 @@ var settings   = require('./settings')();
 
 
 
-module.exports = function(options){
+module.exports = function(options, cb){
     var app = express();
 
 
@@ -18,12 +18,28 @@ module.exports = function(options){
 
 
     app.get('/api/sports', function(req, res){
-        dataSource.getSports({forceRefresh: true}).then(function(sports){
+        dataSource.getSports().then(function(sports){
             res.status(200).json(sports);
         })
     });
 
 
 
-    return app;
+    app.get('/api/sports/:sportId', function(req, res){
+        var sportId = parseInt(req.params.sportId);
+        dataSource.getEvents({sportId: sportId}).then(function(events){
+            res.status(200).json(events);
+        })
+    });
+
+
+
+
+    dataSource.refresh().then(function(){
+        cb(void 0, {
+            app: app
+        })
+    }).catch(function(err){
+        cb(err);
+    })
 }
