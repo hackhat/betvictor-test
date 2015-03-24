@@ -35,11 +35,20 @@ describe('Data source', function(){
 
 
 
+    var stubRequestWithCorrectData = function(){
+        __sandbox.stub(request, 'get')
+            .withArgs(appSettings.dataSourceUrl)
+            .yieldsAsync(void 0, {statusCode: 200}, JSON.stringify(liveData));
+    }
+
+
+
     describe('.getData()', function(){
 
 
 
-        it('should be empty by default', function(done){
+        it('should be initially empty', function(done){
+            stubRequestWithCorrectData();
             dataSource.getData().then(function(data){
                 expect(data).to.be.instanceof(Array);
                 expect(data).to.be.empty;
@@ -52,6 +61,7 @@ describe('Data source', function(){
 
 
         it('should return a shallow copy of the data', function(done){
+            stubRequestWithCorrectData();
             dataSource.getData().then(function(data){
                 expect(data).to.be.instanceof(Array);
                 data[0] = 'changed';
@@ -67,9 +77,7 @@ describe('Data source', function(){
 
 
         it('should return some sports if using force refresh', function(done){
-            __sandbox.stub(request, 'get')
-                .withArgs(appSettings.dataSourceUrl)
-                .yieldsAsync(void 0, {statusCode: 200}, JSON.stringify(liveData));
+            stubRequestWithCorrectData();
             dataSource.getData({forceRefresh: true}).then(function(data){
                 expect(data).to.be.instanceof(Array);
                 expect(data).to.have.length.above(0);
@@ -81,7 +89,7 @@ describe('Data source', function(){
 
 
 
-        it('should throw an error if data not available', function(done){
+        it('should throw an unexpected error happens', function(done){
             var errorName = 'Stub error';
             __sandbox.stub(request, 'get')
                 .withArgs(appSettings.dataSourceUrl)
