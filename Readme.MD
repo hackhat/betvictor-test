@@ -50,3 +50,21 @@ Notes:
  - Please use a local Git repository and commit as you go along
 
 Extra points for: Language support, Caching;
+
+
+
+## Code style
+
+### Requires
+
+My require style is like this:
+
+    var a = require('a');
+    var b = require('b');
+
+instead of:
+
+    var a = require('a'),
+        b = require('b');
+
+because is easier to manipulate them. You can copy-paste and sort lines without further changes. In the first example I can easily switch the lines with "ctrl+shift+UP" and go with it. In the second example you have to change the "var" keyword, comma and spacing.
