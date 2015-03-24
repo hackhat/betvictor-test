@@ -73,7 +73,7 @@ _.extend(DataSource.prototype, {
         var deferred = Q.defer();
         Q.nfcall(request.get, this.__url).spread(function(res, body){
             if(res.statusCode !== 200){
-                return deferred.reject(new Error('Status code not 200.'));
+                return deferred.reject(new Error('Status code not 200'));
             }
             var data = JSON.parse(body);
             this.__data = data.sports;

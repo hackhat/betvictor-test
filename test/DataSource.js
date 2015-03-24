@@ -81,10 +81,10 @@ describe('Data source', function(){
 
 
     it('should throw an error if data not available', function(done){
-        var errorName = 'Stub error.';
+        var errorName = 'Stub error';
         __sandbox.stub(request, 'get')
             .withArgs(appSettings.dataSourceUrl)
-            .yieldsAsync(new Error('Stub error.'));
+            .yieldsAsync(new Error('Stub error'));
         var DataSource = require('server/DataSource');
         var dataSource = new DataSource({
             url: appSettings.dataSourceUrl
@@ -101,7 +101,6 @@ describe('Data source', function(){
 
 
     it('should throw "Status code not 200" error if response status code is not 200', function(done){
-        var errorName = 'Stub error.';
         __sandbox.stub(request, 'get')
             .withArgs(appSettings.dataSourceUrl)
             .yieldsAsync(void 0, {statusCode: 404}, void 0);
@@ -113,7 +112,7 @@ describe('Data source', function(){
             done(new Error('Should throw an error.'));
         }).catch(function(err){
             expect(err).to.be.ok;
-            expect(err.message).to.be.equal('Status code not 200.');
+            expect(err.message).to.be.equal('Status code not 200');
             done();
         });
     })
