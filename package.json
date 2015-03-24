@@ -4,6 +4,7 @@
   "description": "",
   "author": "hackhat",
   "dependencies": {
+    "async": "^0.9.0",
     "enhanced-require": "^0.5.0-beta6",
     "express": "^4.12.3",
     "extract-text-webpack-plugin": "^0.3.8",
