@@ -256,4 +256,39 @@ describe('Server API', function(){
 
 
 
+    describe('/api/sports/:sportId/events/:eventId', function(){
+
+
+
+        it('should return sport\'s events', function(done){
+            stubRequestWithCorrectData();
+            createApp().then(function(){
+                async.eachSeries(liveData_day0.sports, function(sport, cb){
+                    async.eachSeries(sport.events, function(expectedEvent, cb){
+                        supertest(app)
+                            .get('/api/sports/' + sport.id + '/events/' + expectedEvent.id)
+                            .expect('Content-Type', /application\/json/)
+                            .expect(200)
+                            .expect(function(res){
+                                var returnedEvent = res.body;
+                                expect(returnedEvent).to.deep.equals(expectedEvent);
+                            })
+                            .end(function(err, res){
+                                cb(err);
+                            });
+                    }, function(err){
+                        cb(err);
+                    })
+                }, function(err){
+                    done(err);
+                })
+            }).catch(done)
+        })
+
+
+
+    })
+
+
+
 })
