@@ -208,8 +208,8 @@ describe('Server API', function(){
                     .get('/api/sports')
                     .expect('Content-Type', /application\/json/)
                     .expect(function(res){
-                        var sports = res.body;
-                        expect(sports).to.deep.equals(_.sortBy(liveData_day0.sports, 'pos'));
+                        var returnedSports = res.body;
+                        expect(returnedSports).to.deep.equals(_.sortBy(liveData_day0.sports, 'pos'));
                     })
                     .expect(200)
                     .end(function(err, res){
@@ -232,14 +232,14 @@ describe('Server API', function(){
         it('should return sport\'s events', function(done){
             stubRequestWithCorrectData();
             createApp().then(function(){
-                async.eachSeries(liveData_day0.sports, function(sport, cb){
+                async.eachSeries(liveData_day0.sports, function(expectedSport, cb){
                     supertest(app)
-                        .get('/api/sports/' + sport.id)
+                        .get('/api/sports/' + expectedSport.id)
                         .expect('Content-Type', /application\/json/)
                         .expect(200)
                         .expect(function(res){
-                            var events = res.body;
-                            expect(events).to.deep.equals(sport.events);
+                            var returnedEvents = res.body;
+                            expect(returnedEvents).to.deep.equals(expectedSport.events);
                         })
                         .end(function(err, res){
                             cb(err);
@@ -260,7 +260,7 @@ describe('Server API', function(){
 
 
 
-        it('should return sport\'s events', function(done){
+        it('should return event\'s outcomes', function(done){
             stubRequestWithCorrectData();
             createApp().then(function(){
                 async.eachSeries(liveData_day0.sports, function(sport, cb){
@@ -270,8 +270,8 @@ describe('Server API', function(){
                             .expect('Content-Type', /application\/json/)
                             .expect(200)
                             .expect(function(res){
-                                var returnedEvent = res.body;
-                                expect(returnedEvent).to.deep.equals(expectedEvent);
+                                var outcomes = res.body;
+                                expect(outcomes).to.deep.equals(expectedEvent.outcomes);
                             })
                             .end(function(err, res){
                                 cb(err);
