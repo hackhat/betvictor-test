@@ -23,14 +23,12 @@ describe('Server API', function(){
     var __sandbox;
     var app;
     var refreshInterval      = 5 * 60 * 1000;
-    var footballSportId      = 100;
-    var firstFootballEventId = 266701710;
 
 
 
     beforeEach(function(){
         __sandbox = sinon.sandbox.create();
-        __sandbox.useFakeTimers(); // get with __sandbox.clock
+        __sandbox.useFakeTimers();
     });
 
 
@@ -103,7 +101,7 @@ describe('Server API', function(){
 
 
 
-        it('should refresh data after 5 minutes', function(done){
+        it('should refresh and return new data after 5 minutes', function(done){
             stubRequestWithCorrectData();
             var refreshPromise;
             var onRefresh = function(promise){
@@ -140,7 +138,7 @@ describe('Server API', function(){
 
 
 
-        it('should return last data if an error happens after the first refresh', function(done){
+        it('should return last data if an error happens in the last refresh', function(done){
             // This stub returns correct data the first time and then returns an internal error.
             __sandbox.stub(request, 'get')
                 .withArgs(appSettings.dataSourceUrl)
@@ -177,7 +175,6 @@ describe('Server API', function(){
 
 
     it('should not start if first refresh has any error', function(done){
-        // This stub returns correct data the first time and then returns an internal error.
         __sandbox.stub(request, 'get')
             .withArgs(appSettings.dataSourceUrl)
             .yieldsAsync(new Error('Unexpected error'));
@@ -197,7 +194,7 @@ describe('Server API', function(){
 
 
 
-    describe('/api/sports', function(){
+    describe('GET /api/sports', function(){
 
 
 
@@ -225,7 +222,7 @@ describe('Server API', function(){
 
 
 
-    describe('/api/sports/:sportId', function(){
+    describe('GET /api/sports/:sportId', function(){
 
 
 
@@ -256,7 +253,7 @@ describe('Server API', function(){
 
 
 
-    describe('/api/sports/:sportId/events/:eventId', function(){
+    describe('GET /api/sports/:sportId/events/:eventId', function(){
 
 
 
