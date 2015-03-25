@@ -1,4 +1,8 @@
 var webpack = require('webpack');
+var gulp    = require('gulp');
+var server  = require('gulp-develop-server');
+
+
 var webpackConfig = require('tottys-project').webpackConfig({
     rootPath: __dirname,
     overrideUnderscoreWithLodash: false,
@@ -7,8 +11,11 @@ var webpackConfig = require('tottys-project').webpackConfig({
     }
 })
 
+
+
 var path = require('path');
 webpackConfig.resolve.alias['test'] = path.join(__dirname, './test');
+
 
 
 // highcharts config
@@ -35,12 +42,24 @@ webpackConfig.plugins.push(
    // })
 )
 
-module.exports = require('tottys-project').gulpfile({
+require('tottys-project').gulpfile({
     rootPath      : __dirname,
     webpackConfig : webpackConfig,
-    gulp          : require('gulp'),
+    gulp          : gulp,
     webpack       : webpack,
 });
+
+
+
+gulp.task('server', function() {
+    server.listen({path: './src/server/index.js'});
+    gulp.watch([
+        './src/**/*.js'   ,
+        './src/**/*.html' ,
+    ], server.restart);
+});
+
+
 
 module.exports = {
     webpackConfig: webpackConfig

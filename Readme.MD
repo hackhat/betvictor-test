@@ -12,6 +12,16 @@ This is a test project for Bet Victor.
 
 
 
+## Start server
+
+To start the server in development mode you just run:
+
+    `gulp server`
+
+On every change in the `src` folder, the server will restart.
+
+
+
 ## Run tests
 
 To run tests you have to open a console and cd into the root of the project. Then chose the type of test to run:
