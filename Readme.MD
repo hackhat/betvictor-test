@@ -5,7 +5,7 @@ This is a test project for Bet Victor.
 Final result:
 
 <p align="center">
-  <img src ="./docs/img/animation.gif" />
+  <img src ="./docs/img/animation2.gif" />
 </p>
 
 
