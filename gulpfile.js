@@ -7,7 +7,7 @@ var webpackConfig = require('tottys-project').webpackConfig({
     rootPath: __dirname,
     overrideUnderscoreWithLodash: false,
     styles: {
-        enabled: false
+        enabled: true
     }
 })
 

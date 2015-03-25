@@ -52,6 +52,14 @@ describe('Server', function(){
 
 
 
+    var stubRequestWithUnexpectedError = function(){
+        __sandbox.stub(request, 'get')
+            .withArgs(appSettings.dataSourceUrl)
+            .yieldsAsync(new Error('Unexpected error'));
+    }
+
+
+
 
     var createApp = function(options){
         var deferred = Q.defer();
