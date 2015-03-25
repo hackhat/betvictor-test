@@ -145,6 +145,7 @@ describe('Server', function(){
                         .expect(function(res){
                             $ = cheerio.load(res.text);
                             expect($('h1.title').text()).to.be.equal('Sports');
+                            expect($('.language.active').text()).to.be.equal('en');
                         })
                         .end(function(err, res){
                             done(err);
@@ -164,6 +165,7 @@ describe('Server', function(){
                         .expect(function(res){
                             $ = cheerio.load(res.text);
                             expect($('h1.title').text()).to.be.equal('Desportos');
+                            expect($('.language.active').text()).to.be.equal('pt');
                         })
                         .end(function(err, res){
                             done(err);
@@ -251,6 +253,7 @@ describe('Server', function(){
                         .expect(function(res){
                             $ = cheerio.load(res.text);
                             expect($('h1.title').text()).to.be.equal('Events');
+                            expect($('.language.active').text()).to.be.equal('en');
                         })
                         .end(function(err, res){
                             done(err);
@@ -270,6 +273,7 @@ describe('Server', function(){
                         .expect(function(res){
                             $ = cheerio.load(res.text);
                             expect($('h1.title').text()).to.be.equal('Eventos');
+                            expect($('.language.active').text()).to.be.equal('pt');
                         })
                         .end(function(err, res){
                             done(err);
@@ -362,6 +366,7 @@ describe('Server', function(){
                         .expect(function(res){
                             $ = cheerio.load(res.text);
                             expect($('h1.title').text()).to.be.equal('Outcomes');
+                            expect($('.language.active').text()).to.be.equal('en');
                         })
                         .end(function(err, res){
                             done(err);
@@ -381,6 +386,7 @@ describe('Server', function(){
                         .expect(function(res){
                             $ = cheerio.load(res.text);
                             expect($('h1.title').text()).to.be.equal('Resultados');
+                            expect($('.language.active').text()).to.be.equal('pt');
                         })
                         .end(function(err, res){
                             done(err);
