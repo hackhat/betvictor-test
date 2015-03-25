@@ -15,8 +15,15 @@
   </script>
 </head>
 <body onload="prettyPrint(); highlight();">
-  <pre class="prettyprint lang-js">@import './_reset.scss';
+  <pre class="prettyprint lang-js">$grey      : hsl(0, 0%, 75%);
+$greyLight : hsl(0, 0%, 90%);
+$greyDark  : hsl(0, 0%, 25%);
+$blue      : hsl(219, 97%, 60%);
+
+@import './_reset.scss';
 @import './_sports.scss';
+@import './_events.scss';
+@import './_languages.scss';
 
 
 
@@ -39,22 +46,39 @@ h1 {
 
 
 .root {
+    .header {
+        background : $greyLight;
+    }
+
+    .logo {
+        height      : 36px;
+        display     : inline-block;
+        line-height : 36px;
+        padding     : 0 10px;
+        font-weight : bold;
+        transition  : all .3s;
+
+        &amp;:hover {
+            background : $blue;
+            color      : white;
+        }
+    }
 }
 
 
 
 .item {
-    border-top : 1px solid hsl(0, 0%, 78%);
-    width         : 100%;
-    min-height    : 60px;
-    display       : block;
-    line-height   : 25px;
-    padding       : 17px;
-    box-sizing    : border-box;
-    transition    : all .3s;
+    border-top  : 1px solid $grey;
+    width       : 100%;
+    min-height  : 60px;
+    display     : block;
+    line-height : 25px;
+    padding     : 17px;
+    box-sizing  : border-box;
+    transition  : all .3s;
 
     &amp;:last-child {
-        border-bottom : 1px solid hsl(0, 0%, 78%);
+        border-bottom : 1px solid $grey;
     }
 
     &amp; * {
@@ -63,7 +87,7 @@ h1 {
     }
 
     &amp;:hover {
-        background : hsl(219, 97%, 60%);
+        background : $blue;
         color      : white;
         &amp; * {
             color: white

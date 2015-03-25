@@ -15,17 +15,27 @@
   </script>
 </head>
 <body onload="prettyPrint(); highlight();">
-  <pre class="prettyprint lang-js"><span id='server-index'>/**
-</span> * @class server.index
- * This file is the first file you will run when running the server.
- * This loads the app from server.boot and make it listen on port 80.
- */
-require = require('../../getWebpackRequire');
-require('server/boot')({}).then(function(data){
-    data.app.listen(80);
-}).catch(function(err){
-    console.log(err.stack)
-});
+  <pre class="prettyprint lang-js">.languages {
+    background : $greyLight;
+    float      : right;
+    display    : inline-block;
+
+    .language {
+        padding    : 10px;
+        display    : inline-block;
+        color      : $grey;
+        transition : all .3s;
+
+        &amp;.active {
+            color : $greyDark;
+        }
+
+        &amp;:hover {
+            background : $blue;
+            color      : white;
+        }
+    }
+}
 </pre>
 </body>
 </html>
