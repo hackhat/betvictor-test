@@ -1,6 +1,6 @@
-var React = require('react');
-var _     = require('lodash');
-var Sport = require('./Sport');
+var React     = require('react');
+var _         = require('lodash');
+var Sport     = require('./Sport');
 
 
 

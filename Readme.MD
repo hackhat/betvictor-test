@@ -99,6 +99,7 @@ Coded with [sublime text 2](http://www.sublimetext.com/2).
 ## Conclusions
 
 A lot more things could be done like translate every data from the source, make it isomorphic and automate some tasks. I've tried to use a new way to render the CSS (with my smart-css tool) but it would took even more time to implement.
+This application is entirely based on the server, no client side JavaScript code is run. Adding stores and proper UI, the site can be even faster and more appealing.
 
 
 
@@ -124,6 +125,7 @@ Now go to: (localhost/en/sports)[localhost/en/sports];
 
 ## Run tests
 
+If you need to run with code coverage first install istanbul globally with the command: `npm install istanbul -g`
 To run tests you have to open a console and cd into the root of the project. Then chose the type of test to run:
 
  - With code coverage: `istanbul cover --root ./src --hook-run-in-context node_modules/mocha/bin/_mocha -- -R spec`
@@ -145,9 +147,11 @@ The API can be found by opening the file **[full API here](https://rawgit.com/ha
   <img src ="./docs/img/test-coverage-report.jpg" />
 </p>
 
-The current application is 100% covered. View report here **[full API here](https://rawgit.com/hackhat/betvictor-test/v0.0.2/coverage/lcov-report/index.html)**
+The current application is 100% covered. Even being 100% covered doesn't mean all edge cases has been covered, I'm aware that
+some rare edge cases has not been handled. Handling them would take a lot of time and I think goes way out of the context of this project.
 
-This report has been created with [istanbul](https://github.com/gotwarlost/istanbul).
+View test coverage report here **[full API here](https://rawgit.com/hackhat/betvictor-test/v0.0.2/coverage/lcov-report/index.html)**
+Code coverage done with [istanbul](https://github.com/gotwarlost/istanbul).
 
 
 
@@ -157,7 +161,8 @@ This report has been created with [istanbul](https://github.com/gotwarlost/istan
   <img src ="./docs/img/test-report.jpg" />
 </p>
 
-All the tests has been written with [mocha](https://github.com/mochajs/mocha) and [sinom](http://sinonjs.org/) and takes 2 seconds to run on my machine.
+All the tests has been written with [mocha](https://github.com/mochajs/mocha), [supertest](https://github.com/visionmedia/supertest)
+and [sinom](http://sinonjs.org/) and takes 2 seconds to run on my machine.
 
 Used:
 
