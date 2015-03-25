@@ -26,7 +26,7 @@ On every change in the `src` folder, the server will restart.
 
 To run tests you have to open a console and cd into the root of the project. Then chose the type of test to run:
 
- - With code coverage: `istanbul cover --hook-run-in-context node_modules/mocha/bin/_mocha -- -R spec`
+ - With code coverage: `istanbul cover --root ./src --hook-run-in-context node_modules/mocha/bin/_mocha -- -R spec`
  - Without code coverage: `mocha`;
 
 If you ran the test with code coverage open this file to check the html report: `./coverage/lcov-report/index.html`
