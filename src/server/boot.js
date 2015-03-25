@@ -4,6 +4,7 @@ var settings   = require('./settings')();
 var Q          = require('q');
 var fs         = require('fs');
 var _          = require('lodash');
+var React      = require('react');
 var Root       = require('client/ui/Root')({});
 
 
@@ -48,17 +49,22 @@ module.exports = function(options, cb){
 
 
     app.get('/', function(req, res){
-        var data = 'server';
-        var React = require('react');
-        var contents = React.renderToString(React.createElement(Root, {data: data}));
-        res.status(200).send(render(contents));
+        var data = {};
+        dataSource.getSports().then(function(sports){
+            data.sports  = sports;
+            var contents = React.renderToString(React.createElement(Root, {data: data}));
+            res.status(200).send(render(contents));
+        })
     });
 
 
 
     app.get('/api/sports', function(req, res){
         dataSource.getSports().then(function(sports){
-            res.status(200).json(sports);
+            res.status(200).json({
+                version: dataSource.getDataVersion(),
+                sports: sports
+            });
         })
     });
 
@@ -68,7 +74,10 @@ module.exports = function(options, cb){
         var sportId = parseInt(req.params.sportId);
         // @todo: should also return sport
         dataSource.getEvents({sportId: sportId}).then(function(events){
-            res.status(200).json(events);
+            res.status(200).json({
+                version : dataSource.getDataVersion(),
+                events  : events
+            });
         })
     });
 
@@ -79,7 +88,10 @@ module.exports = function(options, cb){
         var eventId = parseInt(req.params.eventId);
         // @todo: should also return event
         dataSource.getOutcomes({sportId: sportId, eventId: eventId}).then(function(outcomes){
-            res.status(200).json(outcomes);
+            res.status(200).json({
+                version : dataSource.getDataVersion(),
+                outcomes  : outcomes
+            });
         })
     });
 
