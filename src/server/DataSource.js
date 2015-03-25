@@ -202,7 +202,7 @@ _.extend(DataSource.prototype, {
      */
     refresh: function(){
         var deferred = Q.defer();
-        Q.nfcall(request.get, this.__url).spread(function(res, body){
+        Q.nfcall(request.get.bind(request), this.__url).spread(function(res, body){
             if(res.statusCode !== 200){
                 return deferred.reject(new Error('Status code not 200'));
             }
