@@ -8,6 +8,7 @@ var request       = require('request');
 var express       = require('express');
 var async         = require('async');
 var cheerio       = require('cheerio');
+var DataSource    = require('server/DataSource');
 var createAppFn   = require('server/boot');
 var appSettings   = require('server/settings')();
 var liveData_day0 = require('test/data/liveData_day0.json');
@@ -60,6 +61,15 @@ describe('Server', function(){
 
 
 
+    var stubDataSourceToThrowError = function(){
+        __sandbox.stub(DataSource.prototype, 'getData', function(){
+            var deferred = Q.defer();
+            deferred.reject(new Error('Internal error'));
+            return deferred.promise;
+        })
+    }
+
+
 
     var createApp = function(options){
         var deferred = Q.defer();
@@ -93,6 +103,25 @@ describe('Server', function(){
                             expect($(sportEl).attr('href')).to.be.equal('/en/sports/' + expectedSports[i].id);
                         })
                         expect($('.root > .sports > .sport')).to.have.length(expectedSports.length);
+                    })
+                    .end(function(err, res){
+                        done(err);
+                    });
+            })
+        })
+
+
+
+        it('should return a 500 error if an internal error occurs', function(done){
+            stubRequestWithCorrectData();
+            stubDataSourceToThrowError();
+            createApp().then(function(){
+                supertest(app)
+                    .get('/en/sports')
+                    .expect('Content-Type', /html/)
+                    .expect(500)
+                    .expect(function(res){
+                        expect(res.text).to.be.equal('Internal error: Error: Internal error');
                     })
                     .end(function(err, res){
                         done(err);
@@ -184,6 +213,25 @@ describe('Server', function(){
                 }, function(err){
                     done(err);
                 })
+            })
+        })
+
+
+
+        it('should return a 500 error if an internal error occurs', function(done){
+            stubRequestWithCorrectData();
+            stubDataSourceToThrowError();
+            createApp().then(function(){
+                supertest(app)
+                    .get('/en/sports/100')
+                    .expect('Content-Type', /html/)
+                    .expect(500)
+                    .expect(function(res){
+                        expect(res.text).to.be.equal('Internal error: Error: Internal error');
+                    })
+                    .end(function(err, res){
+                        done(err);
+                    });
             })
         })
 

@@ -50,7 +50,7 @@ module.exports = function(options, cb){
 
     app.get('/:lang(en|pt)/sports', function(req, res){
         var data = {};
-        var lang = req.params.lang || 'en';
+        var lang = req.params.lang;
         dataSource.getSports().then(function(sports){
             data.sports  = sports;
             data.version = dataSource.getDataVersion();
@@ -66,7 +66,7 @@ module.exports = function(options, cb){
 
     app.get('/:lang(en|pt)/sports/:sportId', function(req, res){
         var data = {};
-        var lang = req.params.lang || 'en';
+        var lang = req.params.lang;
         var sportId = parseInt(req.params.sportId);
         dataSource.getEvents({sportId: sportId}).then(function(events){
             data.sportId = sportId;
