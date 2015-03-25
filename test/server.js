@@ -7,11 +7,11 @@ var supertest     = require('supertest');
 var request       = require('request');
 var express       = require('express');
 var async         = require('async');
+var cheerio       = require('cheerio');
 var createAppFn   = require('server/boot');
 var appSettings   = require('server/settings')();
 var liveData_day0 = require('test/data/liveData_day0.json');
 var liveData_day1 = require('test/data/liveData_day1.json');
-
 
 
 
@@ -74,19 +74,25 @@ describe('Server', function(){
 
 
 
-    describe('GET /', function(){
+    describe('GET /:lang', function(){
 
 
 
-        it('should return an html page with all the sports', function(done){
+        it.only('should return an html page with all the sports', function(done){
             stubRequestWithCorrectData();
             createApp().then(function(){
                 supertest(app)
-                    .get('/')
+                    .get('/en')
                     .expect('Content-Type', /html/)
                     .expect(200)
                     .expect(function(res){
-                        console.log(res.body);
+                        $ = cheerio.load(res.text);
+                        var expectedSports = _.sortBy(liveData_day0.sports, 'pos');
+                        $('.root > .sports > .sport').each(function(i, sportEl){
+                            expect($(sportEl).text()).to.be.equal(expectedSports[i].title);
+                            expect($(sportEl).attr('href')).to.be.equal('/en/sports/' + expectedSports[i].id);
+                        })
+                        expect($('.root > .sports > .sport')).to.have.length(expectedSports.length)
                     })
                     .end(function(err, res){
                         done(err);
