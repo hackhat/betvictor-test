@@ -115,7 +115,7 @@ describe('Server', function(){
                         .expect(200)
                         .expect(function(res){
                             $ = cheerio.load(res.text);
-                            expect($('.title').text()).to.be.equal('Sports');
+                            expect($('h1.title').text()).to.be.equal('Sports');
                         })
                         .end(function(err, res){
                             done(err);
@@ -134,7 +134,94 @@ describe('Server', function(){
                         .expect(200)
                         .expect(function(res){
                             $ = cheerio.load(res.text);
-                            expect($('.title').text()).to.be.equal('Desportos');
+                            expect($('h1.title').text()).to.be.equal('Desportos');
+                        })
+                        .end(function(err, res){
+                            done(err);
+                        });
+                })
+            })
+
+
+
+        })
+
+
+
+    })
+
+
+
+    describe('GET /:lang/sports/:sportId', function(){
+
+
+
+        it('should return an html page with all the events of the sports', function(done){
+            stubRequestWithCorrectData();
+            createApp().then(function(){
+                async.eachSeries(liveData_day0.sports, function(expectedSport, cb){
+                    supertest(app)
+                        .get('/en/sports/' + expectedSport.id)
+                        .expect('Content-Type', /html/)
+                        .expect(200)
+                        .expect(function(res){
+                            $ = cheerio.load(res.text);
+                            var expectedEvents = _.sortBy(expectedSport.events, 'pos');
+                            $('.root > .events > .event > .title').each(function(i, el){
+                                expect($(el).text()).to.be.equal(expectedEvents[i].title);
+                            })
+                            $('.root > .events > .event > .status').each(function(i, el){
+                                expect($(el).text()).to.be.equal('Status: ' + expectedEvents[i].status);
+                            })
+                            $('.root > .events > .event > .score').each(function(i, el){
+                                expect($(el).text()).to.be.equal('Score: ' + expectedEvents[i].score);
+                            })
+                            expect($('.root > .events > .event')).to.have.length(expectedEvents.length);
+                        })
+                        .end(function(err, res){
+                            done(err);
+                        });
+                }, function(err){
+                    done(err);
+                })
+            })
+        })
+
+
+
+        describe('should return the page in the correct language', function(){
+
+
+
+            it('english', function(done){
+                stubRequestWithCorrectData();
+                createApp().then(function(){
+                    supertest(app)
+                        .get('/en/sports/100')
+                        .expect('Content-Type', /html/)
+                        .expect(200)
+                        .expect(function(res){
+                            $ = cheerio.load(res.text);
+                            expect($('h1.title').text()).to.be.equal('Events');
+                        })
+                        .end(function(err, res){
+                            done(err);
+                        });
+                })
+            })
+
+
+
+            it('portuguese', function(done){
+                stubRequestWithCorrectData();
+                createApp().then(function(){
+                    supertest(app)
+                        .get('/pt/sports/100')
+                        .expect('Content-Type', /html/)
+                        .expect(200)
+                        .expect(function(res){
+                            $ = cheerio.load(res.text);
+                            expect($('h1.title').text()).to.be.equal('Eventos');
                         })
                         .end(function(err, res){
                             done(err);
