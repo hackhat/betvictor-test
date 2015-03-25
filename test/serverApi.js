@@ -53,6 +53,15 @@ describe('Server API', function(){
 
 
 
+    var stubRequestWithUnexpectedError = function(){
+        __sandbox.stub(request, 'get')
+            .withArgs(appSettings.dataSourceUrl)
+            .yieldsAsync(new Error('Unexpected error'));
+    }
+
+
+
+
 
     var createApp = function(options){
         var deferred = Q.defer();
@@ -262,6 +271,21 @@ describe('Server API', function(){
 
 
 
+        it('should return 404 on error if wrong sport id requested', function(done){
+            stubRequestWithCorrectData();
+            createApp().then(function(){
+                supertest(app)
+                    .get('/api/sports/wrongSportId')
+                    .expect('Content-Type', /application\/json/)
+                    .expect(404)
+                    .end(function(err, res){
+                        done(err);
+                    });
+            }).catch(done)
+        })
+
+
+
     })
 
 
@@ -291,6 +315,21 @@ describe('Server API', function(){
                 }, function(err){
                     done(err);
                 })
+            }).catch(done)
+        })
+
+
+
+        it('should return 404 on error if wrong sport and event id requested', function(done){
+            stubRequestWithCorrectData();
+            createApp().then(function(){
+                supertest(app)
+                    .get('/api/sports/wrongSportId/events/wrongEventId')
+                    .expect('Content-Type', /application\/json/)
+                    .expect(404)
+                    .end(function(err, res){
+                        done(err);
+                    });
             }).catch(done)
         })
 

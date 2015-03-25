@@ -54,10 +54,6 @@ module.exports = function(options, cb){
             data.sports  = sports;
             var contents = React.renderToString(React.createElement(Root, {data: data}));
             res.status(200).send(render(contents));
-        }, function(err){
-            var data = err;
-            var contents = React.renderToString(React.createElement(Root, {data: data}));
-            res.status(404).send(render(contents));
         })
     });
 
@@ -69,8 +65,6 @@ module.exports = function(options, cb){
                 version: dataSource.getDataVersion(),
                 sports: sports
             });
-        }, function(err){
-            res.status(404).json({err: err});
         })
     });
 
@@ -80,12 +74,14 @@ module.exports = function(options, cb){
         var sportId = parseInt(req.params.sportId);
         // @todo: should also return sport
         dataSource.getEvents({sportId: sportId}).then(function(events){
-            res.status(200).json({
-                version : dataSource.getDataVersion(),
-                events  : events
-            });
-        }, function(err){
-            res.status(404).json({err: err});
+            if(events){
+                res.status(200).json({
+                    version : dataSource.getDataVersion(),
+                    events  : events
+                });
+            }else{
+                res.status(404).json({err: new Error('No events found.')});
+            }
         })
     });
 
@@ -96,12 +92,14 @@ module.exports = function(options, cb){
         var eventId = parseInt(req.params.eventId);
         // @todo: should also return event
         dataSource.getOutcomes({sportId: sportId, eventId: eventId}).then(function(outcomes){
-            res.status(200).json({
-                version  : dataSource.getDataVersion(),
-                outcomes : outcomes
-            });
-        }, function(err){
-            res.status(404).json({err: err});
+            if(outcomes){
+                res.status(200).json({
+                    version  : dataSource.getDataVersion(),
+                    outcomes : outcomes
+                });
+            }else{
+                res.status(404).json({err: new Error('No outcomes found.')});
+            }
         })
     });
 
