@@ -1,11 +1,12 @@
-var React = require('react');
-var _     = require('lodash');
+var React  = require('react');
+var _      = require('lodash');
+var Sports = require('./Sports');
 
 
 
 
 
-return React.createClass({
+module.exports = React.createClass({
 
 
 
@@ -13,10 +14,22 @@ return React.createClass({
 
 
 
+    childContextTypes: {
+        data: React.PropTypes.object
+    },
+
+
+
+    getChildContext: function(){
+        return {data: this.props.data};
+    },
+
+
+
     render: function(){
         return React.DOM.div({
             className: 'root'
-        }, this.props.data)
+        }, React.createElement(Sports, {sports: this.props.data.sports}))
     }
 
 

@@ -48,12 +48,17 @@ module.exports = function(options, cb){
 
 
 
-    app.get('/', function(req, res){
+    app.get('/:lang(en|pt)', function(req, res){
         var data = {};
+        var lang = req.params.lang || 'en';
         dataSource.getSports().then(function(sports){
             data.sports  = sports;
+            data.version = dataSource.getDataVersion();
+            data.lang    = lang;
             var contents = React.renderToString(React.createElement(Root, {data: data}));
             res.status(200).send(render(contents));
+        }).catch(function(err){
+            res.status(500).send('Internal error: ' + err);
         })
     });
 
@@ -62,8 +67,8 @@ module.exports = function(options, cb){
     app.get('/api/sports', function(req, res){
         dataSource.getSports().then(function(sports){
             res.status(200).json({
-                version: dataSource.getDataVersion(),
-                sports: sports
+                version : dataSource.getDataVersion(),
+                sports  : sports
             });
         })
     });
