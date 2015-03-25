@@ -287,4 +287,115 @@ describe('Server', function(){
 
 
 
+
+
+
+
+    describe('GET /:lang/sports/:sportId/events/:eventId', function(){
+
+
+
+        it('should return an html page with all the outcomes of the events', function(done){
+            stubRequestWithCorrectData();
+            createApp().then(function(){
+                async.eachSeries(liveData_day0.sports, function(sport, cb){
+                    async.eachSeries(sport.events, function(expectedEvent, cb){
+                        supertest(app)
+                            .get('/en/sports/' + expectedSport.id + '/events/' + expectedEvent.id)
+                            .expect('Content-Type', /html/)
+                            .expect(200)
+                            .expect(function(res){
+                                $ = cheerio.load(res.text);
+                                var expectedOutcomes = _.cloneDeep(expectedEvent.outcomes);
+                                $('.root > .outcomes > .outcome > .description').each(function(i, el){
+                                    expect($(el).text()).to.be.equal(expectedOutcomes[i].description);
+                                })
+                                $('.root > .outcomes > .outcome > .price').each(function(i, el){
+                                    expect($(el).text()).to.be.equal('Price: ' + expectedOutcomes[i].price);
+                                })
+                                expect($('.root > .outcomes > .outcome')).to.have.length(expectedOutcomes.length);
+                            })
+                            .end(function(err, res){
+                                done(err);
+                            });
+                    }, function(err){
+                        cb(err);
+                    })
+                }, function(err){
+                    done(err);
+                })
+            })
+        })
+
+
+
+        it('should return a 500 error if an internal error occurs', function(done){
+            stubRequestWithCorrectData();
+            stubDataSourceToThrowError();
+            createApp().then(function(){
+                supertest(app)
+                    .get('/en/sports/100/events/66917210')
+                    .expect('Content-Type', /html/)
+                    .expect(500)
+                    .expect(function(res){
+                        expect(res.text).to.be.equal('Internal error: Error: Internal error');
+                    })
+                    .end(function(err, res){
+                        done(err);
+                    });
+            })
+        })
+
+
+
+        describe('should return the page in the correct language', function(){
+
+
+
+            it('english', function(done){
+                stubRequestWithCorrectData();
+                createApp().then(function(){
+                    supertest(app)
+                        .get('/en/sports/100/events/66917210')
+                        .expect('Content-Type', /html/)
+                        .expect(200)
+                        .expect(function(res){
+                            $ = cheerio.load(res.text);
+                            expect($('h1.title').text()).to.be.equal('Outcomes');
+                        })
+                        .end(function(err, res){
+                            done(err);
+                        });
+                })
+            })
+
+
+
+            it('portuguese', function(done){
+                stubRequestWithCorrectData();
+                createApp().then(function(){
+                    supertest(app)
+                        .get('/pt/sports/100/events/66917210')
+                        .expect('Content-Type', /html/)
+                        .expect(200)
+                        .expect(function(res){
+                            $ = cheerio.load(res.text);
+                            expect($('h1.title').text()).to.be.equal('Resultados');
+                        })
+                        .end(function(err, res){
+                            done(err);
+                        });
+                })
+            })
+
+
+
+        })
+
+
+
+    })
+
+
+
 })
