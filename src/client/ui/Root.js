@@ -41,7 +41,8 @@ module.exports = React.createClass({
         var content;
         if(this.props.data.sports){
             content = React.createElement(Sports, {sports: this.props.data.sports})
-        }else if(this.props.data.events){
+        }
+        if(this.props.data.events){
             content = React.createElement(Events, {events: this.props.data.events})
         }
         return React.DOM.div({
