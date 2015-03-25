@@ -271,7 +271,7 @@ describe('Server API', function(){
 
 
 
-        it('should return 404 on error if wrong sport id requested', function(done){
+        it('should return 404 error if wrong sport id requested', function(done){
             stubRequestWithCorrectData();
             createApp().then(function(){
                 supertest(app)
@@ -320,7 +320,7 @@ describe('Server API', function(){
 
 
 
-        it('should return 404 on error if wrong sport and event id requested', function(done){
+        it('should return 404 error if wrong sport and event id requested', function(done){
             stubRequestWithCorrectData();
             createApp().then(function(){
                 supertest(app)
