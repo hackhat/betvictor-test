@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js">var React = require('react');
+var _     = require('lodash');
+
+
+
+
+
+<span id='client-ui-Event'>/**
+</span> * @class client.ui.Event
+ * Item to render an event.
+ */
+module.exports = React.createClass({
+
+
+
+    displayName: 'event',
+
+
+
+    contextTypes: {
+        data : React.PropTypes.object,
+        lang : React.PropTypes.object
+    },
+
+
+
+    render: function(){
+        return React.DOM.a({
+            className : 'event item',
+            href      : '/' + this.context.data.lang + '/sports/' + this.context.data.sportId + '/events/' + this.props.id
+        },
+            React.DOM.span({
+                className: 'title'
+            }, this.props.title),
+            React.DOM.span({
+                className: 'score'
+            }, this.context.lang['score'] + ': ' + this.props.score),
+            React.DOM.span({
+                className: 'status'
+            }, this.context.lang['status'] + ': ' + this.props.status)
+        )
+    }
+
+
+
+});
+</pre>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js">var React = require('react');
+var _     = require('lodash');
+
+
+
+
+
+<span id='client-ui-Sport'>/**
+</span> * @class client.ui.Sport
+ * Item to render a sport.
+ */
+module.exports = React.createClass({
+
+
+
+    displayName: 'sport',
+
+
+
+    contextTypes: {
+        data : React.PropTypes.object,
+        lang : React.PropTypes.object
+    },
+
+
+
+    render: function(){
+        return React.DOM.a({
+            className : 'sport item',
+            href      : '/' + this.context.data.lang + '/sports/' + this.props.id
+        }, this.props.title)
+    }
+
+
+
+});
+</pre>
+</body>
+</html>

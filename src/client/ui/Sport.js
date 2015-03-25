@@ -5,6 +5,10 @@ var _     = require('lodash');
 
 
 
+/**
+ * @class client.ui.Sport
+ * Item to render a sport.
+ */
 module.exports = React.createClass({
 
 

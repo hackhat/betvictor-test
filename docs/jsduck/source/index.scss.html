@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js">@import './_reset.scss';
+@import './_sports.scss';
+
+
+
+body {
+    background: white;
+}
+
+
+
+a, a:hover {
+    text-decoration : none;
+}
+
+
+
+h1 {
+    padding: 20px;
+}
+
+
+
+.root {
+}
+
+
+
+.item {
+    border-top : 1px solid hsl(0, 0%, 78%);
+    width         : 100%;
+    min-height    : 60px;
+    display       : block;
+    line-height   : 25px;
+    padding       : 17px;
+    box-sizing    : border-box;
+    transition    : all .3s;
+
+    &amp;:last-child {
+        border-bottom : 1px solid hsl(0, 0%, 78%);
+    }
+
+    &amp; * {
+        pointer-events : none;
+        padding-right  : 15px;
+    }
+
+    &amp;:hover {
+        background : hsl(219, 97%, 60%);
+        color      : white;
+        &amp; * {
+            color: white
+        }
+    }
+}
+</pre>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js">var React   = require('react');
+var _       = require('lodash');
+var Outcome = require('./Outcome');
+
+
+
+
+
+<span id='client-ui-Outcomes'>/**
+</span> * @class client.ui.Outcomes
+ * A list of outcomes.
+ */
+module.exports = React.createClass({
+
+
+
+    displayName: 'outcomes',
+
+
+
+    contextTypes: {
+        data : React.PropTypes.object,
+        lang : React.PropTypes.object,
+    },
+
+
+
+    render: function(){
+        return React.DOM.div({
+            className: 'outcomes'
+        },
+            React.DOM.h1({
+                className: 'title'
+            }, this.context.lang['outcomes']),
+            this.props.outcomes.map(function(outcome){
+                outcome.key = outcome.id;
+                return React.createElement(Outcome, outcome);
+            })
+        )
+    }
+
+
+
+});
+</pre>
+</body>
+</html>

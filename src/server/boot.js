@@ -14,12 +14,11 @@ var Root       = require('client/ui/Root');
 /**
  * @class server.boot
  * Returns an object with data about the server.
- * Note: this will not make the server to listen on any port.
+ * Note: this will not make the server to listen on any port, you have to manually make it listen
+ * on a certain port.
  * @param  {Object}   options
  * @return {Q} Returns a promise with data about the server and has the following format:
  *                  data.app          : is the express server instance (not yet listening to any port)
- *                  data.forceRefresh : a function that can be called to refresh DataSource's data.
- *                                      Returns a promise.
  */
 var noop = function(){};
 module.exports = function(options, cb){

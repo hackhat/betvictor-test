@@ -15,8 +15,15 @@
   </script>
 </head>
 <body onload="prettyPrint(); highlight();">
-  <pre class="prettyprint lang-js">module.exports = function(){
+  <pre class="prettyprint lang-js"><span id='server-settings'>/**
+</span> * @class server.settings
+ */
+module.exports = function(){
     return {
+<span id='server-settings-property-dataSourceUrl'>        /**
+</span>         * Url to get data about sports.
+         * @type {String}
+         */
         dataSourceUrl: 'http://www.betvictor.com/live/en/live/list.json'
     }
 }

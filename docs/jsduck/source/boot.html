@@ -15,7 +15,186 @@
   </script>
 </head>
 <body onload="prettyPrint(); highlight();">
-  <pre class="prettyprint lang-js">console.log('boot')
+  <pre class="prettyprint lang-js">var express    = require('express');
+var DataSource = require('./DataSource');
+var settings   = require('./settings')();
+var Q          = require('q');
+var fs         = require('fs');
+var _          = require('lodash');
+var React      = require('react');
+var Root       = require('client/ui/Root');
+
+
+
+
+
+<span id='server-boot'>/**
+</span> * @class server.boot
+ * Returns an object with data about the server.
+ * Note: this will not make the server to listen on any port, you have to manually make it listen
+ * on a certain port.
+ * @param  {Object}   options
+ * @return {Q} Returns a promise with data about the server and has the following format:
+ *                  data.app          : is the express server instance (not yet listening to any port)
+ */
+var noop = function(){};
+module.exports = function(options, cb){
+    options = _.extend({
+        onRefresh : noop
+    }, options)
+    var deferred = Q.defer();
+    var app      = express();
+
+
+
+    // No need to use any express specific templates because we just have 1 root template
+    // and the rest is generated with react. Is its job to take care of html, not express.
+    var indexHtml = fs.readFileSync('./dist/index.html', 'utf8');
+    var render = function(body){
+        var left  = '&lt;div id=&quot;root&quot;&gt;';
+        var right = '&lt;/div&gt;';
+        return indexHtml.replace([left, right].join(''), [left, body, right].join(''));
+    }
+
+
+
+    var dataSource = new DataSource({
+        url : settings.dataSourceUrl
+    });
+
+
+
+    app.get('/:lang(en|pt)/sports', function(req, res){
+        var data = {};
+        var lang = req.params.lang;
+        dataSource.getSports().then(function(sports){
+            data.sports  = sports;
+            data.version = dataSource.getDataVersion();
+            data.lang    = lang;
+            var contents = React.renderToString(React.createElement(Root, {data: data}));
+            res.status(200).send(render(contents));
+        }).catch(function(err){
+            res.status(500).send('Internal error: ' + err);
+        })
+    });
+
+
+
+    app.get('/:lang(en|pt)/sports/:sportId', function(req, res){
+        var data = {};
+        var lang = req.params.lang;
+        var sportId = parseInt(req.params.sportId);
+        dataSource.getEvents({sportId: sportId}).then(function(events){
+            data.sportId = sportId;
+            data.events  = events;
+            data.version = dataSource.getDataVersion();
+            data.lang    = lang;
+            var contents = React.renderToString(React.createElement(Root, {data: data}));
+            res.status(200).send(render(contents));
+        }).catch(function(err){
+            res.status(500).send('Internal error: ' + err);
+        })
+    });
+
+
+
+    app.get('/:lang(en|pt)/sports/:sportId/events/:eventId', function(req, res){
+        var data = {};
+        var lang = req.params.lang;
+        var sportId = parseInt(req.params.sportId);
+        var eventId = parseInt(req.params.eventId);
+        dataSource.getOutcomes({sportId: sportId, eventId: eventId}).then(function(outcomes){
+            data.sportId  = sportId;
+            data.eventId  = eventId;
+            data.outcomes = outcomes;
+            data.version  = dataSource.getDataVersion();
+            data.lang     = lang;
+            var contents  = React.renderToString(React.createElement(Root, {data: data}));
+            res.status(200).send(render(contents));
+        }).catch(function(err){
+            res.status(500).send('Internal error: ' + err);
+        })
+    });
+
+
+
+    app.get('/api/sports', function(req, res){
+        dataSource.getSports().then(function(sports){
+            res.status(200).json({
+                version : dataSource.getDataVersion(),
+                sports  : sports
+            });
+        })
+    });
+
+
+
+    app.get('/api/sports/:sportId', function(req, res){
+        var sportId = parseInt(req.params.sportId);
+        // @todo: should also return sport
+        dataSource.getEvents({sportId: sportId}).then(function(events){
+            if(events){
+                res.status(200).json({
+                    version : dataSource.getDataVersion(),
+                    events  : events
+                });
+            }else{
+                res.status(404).json({err: new Error('No events found.')});
+            }
+        })
+    });
+
+
+
+    app.get('/api/sports/:sportId/events/:eventId', function(req, res){
+        var sportId = parseInt(req.params.sportId);
+        var eventId = parseInt(req.params.eventId);
+        // @todo: should also return event
+        dataSource.getOutcomes({sportId: sportId, eventId: eventId}).then(function(outcomes){
+            if(outcomes){
+                res.status(200).json({
+                    version  : dataSource.getDataVersion(),
+                    outcomes : outcomes
+                });
+            }else{
+                res.status(404).json({err: new Error('No outcomes found.')});
+            }
+        })
+    });
+
+
+
+    // Required for static assets such as js and css.
+    app.use(express.static('dist'));
+
+
+
+    var forceRefresh = function(){
+        var promise = dataSource.refresh();
+        options.onRefresh(promise);
+        return promise;
+    }
+
+
+
+    setInterval(function(){
+        forceRefresh().then(function(){});
+    }, 5 * 60 * 1000)
+
+
+
+    // The first time the app startup needs to refresh the dataSource.
+    // In this way when you reach the server is in a proper state and you never
+    // reach a server in a null state.
+    forceRefresh().then(function(){
+        deferred.resolve({
+            app : app
+        })
+    }).catch(function(err){
+        deferred.reject(err);
+    })
+    return deferred.promise;
+}
 </pre>
 </body>
 </html>

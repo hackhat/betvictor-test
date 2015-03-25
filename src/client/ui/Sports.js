@@ -5,6 +5,11 @@ var Sport = require('./Sport');
 
 
 
+
+/**
+ * @class client.ui.Sports
+ * A list of sports.
+ */
 module.exports = React.createClass({
 
 

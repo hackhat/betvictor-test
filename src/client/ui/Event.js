@@ -5,6 +5,10 @@ var _     = require('lodash');
 
 
 
+/**
+ * @class client.ui.Event
+ * Item to render an event.
+ */
 module.exports = React.createClass({
 
 

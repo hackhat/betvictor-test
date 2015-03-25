@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js">var React    = require('react');
+var _        = require('lodash');
+var Sports   = require('./Sports');
+var Events   = require('./Events');
+var Outcomes = require('./Outcomes');
+var en_US    = require('client/i18n/en_US');
+var pt_PT    = require('client/i18n/pt_PT');
+// This is for a simple project, therefore we can just use
+// &quot;en&quot; instead of the full name &quot;en_US&quot;.
+var languages = {
+    en: en_US,
+    pt: pt_PT
+}
+
+
+
+
+
+<span id='client-ui-Root'>/**
+</span> * @class client.ui.Root
+ * Root of the application.
+ */
+module.exports = React.createClass({
+
+
+
+    displayName: 'root',
+
+
+
+    childContextTypes: {
+        data : React.PropTypes.object,
+        lang : React.PropTypes.object
+    },
+
+
+
+    getChildContext: function(){
+        return {
+            data: this.props.data,
+            lang: languages[this.props.data.lang]
+        };
+    },
+
+
+
+    render: function(){
+        var content;
+        if(this.props.data.sports){
+            content = React.createElement(Sports, {sports: this.props.data.sports})
+        }
+        if(this.props.data.events){
+            content = React.createElement(Events, {events: this.props.data.events})
+        }
+        if(this.props.data.outcomes){
+            content = React.createElement(Outcomes, {outcomes: this.props.data.outcomes})
+        }
+        return React.DOM.div({
+            className: 'root'
+        }, content)
+    }
+
+
+
+});
+</pre>
+</body>
+</html>

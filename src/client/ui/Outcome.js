@@ -5,6 +5,10 @@ var _     = require('lodash');
 
 
 
+/**
+ * @class client.ui.Outcome
+ * Item to render an outcome.
+ */
 module.exports = React.createClass({
 
 

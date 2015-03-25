@@ -14,6 +14,12 @@ var languages = {
 
 
 
+
+
+/**
+ * @class client.ui.Root
+ * Root of the application.
+ */
 module.exports = React.createClass({
 
 

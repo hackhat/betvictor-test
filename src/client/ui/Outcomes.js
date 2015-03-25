@@ -5,6 +5,11 @@ var Outcome = require('./Outcome');
 
 
 
+
+/**
+ * @class client.ui.Outcomes
+ * A list of outcomes.
+ */
 module.exports = React.createClass({
 
 

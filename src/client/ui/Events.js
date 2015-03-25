@@ -5,6 +5,11 @@ var Event = require('./Event');
 
 
 
+
+/**
+ * @class client.ui.Events
+ * A list of events.
+ */
 module.exports = React.createClass({
 
 

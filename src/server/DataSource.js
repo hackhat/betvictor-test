@@ -6,6 +6,8 @@ var request = require('request');
 
 
 /**
+ * @class server.DataSource
+ *
  * Data source contains the data about sports and its events.
  *
  * Rationale:
