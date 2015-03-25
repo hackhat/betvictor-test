@@ -59,6 +59,10 @@ module.exports = React.createClass({
         return React.DOM.div({
             className: 'root'
         },
+            React.DOM.span({
+                className : 'logo',
+                url       : '/' + this.context.data.lang + '/sports'
+            }),
             React.createElement(Languages),
             content
         )

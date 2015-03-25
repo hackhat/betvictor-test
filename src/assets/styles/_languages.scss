@@ -1,6 +1,7 @@
 .languages {
-    text-align: right;
-    background: $greyLight;
+    text-align : right;
+    background : $greyLight;
+    max-width  : 100px;
 
     .language {
         padding    : 10px;
