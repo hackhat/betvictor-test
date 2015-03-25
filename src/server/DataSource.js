@@ -102,8 +102,10 @@ _.extend(DataSource.prototype, {
         var deferred = Q.defer();
         this.getData({
             forceRefresh: options.forceRefresh
-        }).then(function(data){
-            deferred.resolve(_.sortBy(data, 'pos'));
+        }).then(function(sports){
+            sports = _.cloneDeep(sports);
+            sports.forEach(function(sport){delete sport.events;})
+            deferred.resolve(_.sortBy(sports, 'pos'));
         }).catch(function(err){
             deferred.reject(err);
         })
@@ -131,11 +133,13 @@ _.extend(DataSource.prototype, {
             deferred.reject(new Error('Sport id should be specified'));
             return deferred.promise;
         }
-        this.getSports({
+        this.getData({
             forceRefresh: options.forceRefresh
         }).then(function(sports){
             var sport = _.findWhere(sports, {id: options.sportId});
             var events = sport ? sport.events : false;
+            events = _.cloneDeep(events);
+            events && events.forEach(function(event){delete event.outcomes;})
             deferred.resolve(events);
         }).catch(function(err){
             deferred.reject(err);
@@ -170,13 +174,15 @@ _.extend(DataSource.prototype, {
             deferred.reject(new Error('Event id should be specified'));
             return deferred.promise;
         }
-        this.getEvents({
-            sportId      : options.sportId,
-            forceRefresh : options.forceRefresh
-        }).then(function(events){
-            if(events === false){
+        this.getData({
+            forceRefresh: options.forceRefresh,
+            sportId      : options.sportId
+        }).then(function(sports){
+            var sport = _.findWhere(sports, {id: options.sportId});
+            if(!sport){
                 return deferred.resolve(false);
             }
+            var events = sport.events;
             var event = _.findWhere(events, {id: options.eventId});
             var outcomes = event ? event.outcomes : false;
             deferred.resolve(outcomes);

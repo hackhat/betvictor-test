@@ -216,8 +216,9 @@ describe('Server API', function(){
                     .get('/api/sports')
                     .expect('Content-Type', /application\/json/)
                     .expect(function(res){
-                        var returnedSports = res.body.sports;
-                        expect(returnedSports).to.deep.equals(_.sortBy(liveData_day0.sports, 'pos'));
+                        var expectedSports = _.cloneDeep(liveData_day0.sports);
+                        expectedSports.forEach(function(sport){delete sport.events;})
+                        expect(res.body.sports).to.deep.equals(_.sortBy(expectedSports, 'pos'));
                     })
                     .expect(200)
                     .end(function(err, res){
@@ -246,8 +247,9 @@ describe('Server API', function(){
                         .expect('Content-Type', /application\/json/)
                         .expect(200)
                         .expect(function(res){
-                            var returnedEvents = res.body.events;
-                            expect(returnedEvents).to.deep.equals(expectedSport.events);
+                            var expectedEvents = _.cloneDeep(expectedSport.events);
+                            expectedEvents.forEach(function(event){delete event.outcomes;})
+                            expect(res.body.events).to.deep.equals(expectedEvents);
                         })
                         .end(function(err, res){
                             cb(err);
@@ -278,8 +280,7 @@ describe('Server API', function(){
                             .expect('Content-Type', /application\/json/)
                             .expect(200)
                             .expect(function(res){
-                                var outcomes = res.body.outcomes;
-                                expect(outcomes).to.deep.equals(expectedEvent.outcomes);
+                                expect(res.body.outcomes).to.deep.equals(expectedEvent.outcomes);
                             })
                             .end(function(err, res){
                                 cb(err);

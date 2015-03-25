@@ -54,6 +54,10 @@ module.exports = function(options, cb){
             data.sports  = sports;
             var contents = React.renderToString(React.createElement(Root, {data: data}));
             res.status(200).send(render(contents));
+        }, function(err){
+            var data = err;
+            var contents = React.renderToString(React.createElement(Root, {data: data}));
+            res.status(404).send(render(contents));
         })
     });
 
@@ -65,6 +69,8 @@ module.exports = function(options, cb){
                 version: dataSource.getDataVersion(),
                 sports: sports
             });
+        }, function(err){
+            res.status(404).json({err: err});
         })
     });
 
@@ -78,6 +84,8 @@ module.exports = function(options, cb){
                 version : dataSource.getDataVersion(),
                 events  : events
             });
+        }, function(err){
+            res.status(404).json({err: err});
         })
     });
 
@@ -89,9 +97,11 @@ module.exports = function(options, cb){
         // @todo: should also return event
         dataSource.getOutcomes({sportId: sportId, eventId: eventId}).then(function(outcomes){
             res.status(200).json({
-                version : dataSource.getDataVersion(),
-                outcomes  : outcomes
+                version  : dataSource.getDataVersion(),
+                outcomes : outcomes
             });
+        }, function(err){
+            res.status(404).json({err: err});
         })
     });
 
