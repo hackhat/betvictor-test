@@ -107,7 +107,7 @@ describe('Server', function(){
                     .end(function(err, res){
                         done(err);
                     });
-            })
+            }).catch(done);
         })
 
 
@@ -126,7 +126,7 @@ describe('Server', function(){
                     .end(function(err, res){
                         done(err);
                     });
-            })
+            }).catch(done);
         })
 
 
@@ -149,7 +149,7 @@ describe('Server', function(){
                         .end(function(err, res){
                             done(err);
                         });
-                })
+                }).catch(done);
             })
 
 
@@ -168,7 +168,7 @@ describe('Server', function(){
                         .end(function(err, res){
                             done(err);
                         });
-                })
+                }).catch(done);
             })
 
 
@@ -213,7 +213,7 @@ describe('Server', function(){
                 }, function(err){
                     done(err);
                 })
-            })
+            }).catch(done);
         })
 
 
@@ -232,7 +232,7 @@ describe('Server', function(){
                     .end(function(err, res){
                         done(err);
                     });
-            })
+            }).catch(done);
         })
 
 
@@ -255,7 +255,7 @@ describe('Server', function(){
                         .end(function(err, res){
                             done(err);
                         });
-                })
+                }).catch(done);
             })
 
 
@@ -274,7 +274,7 @@ describe('Server', function(){
                         .end(function(err, res){
                             done(err);
                         });
-                })
+                }).catch(done);
             })
 
 
@@ -298,8 +298,8 @@ describe('Server', function(){
         it('should return an html page with all the outcomes of the events', function(done){
             stubRequestWithCorrectData();
             createApp().then(function(){
-                async.eachSeries(liveData_day0.sports, function(sport, cb){
-                    async.eachSeries(sport.events, function(expectedEvent, cb){
+                async.eachSeries(liveData_day0.sports, function(expectedSport, cb){
+                    async.eachSeries(expectedSport.events, function(expectedEvent, cb){
                         supertest(app)
                             .get('/en/sports/' + expectedSport.id + '/events/' + expectedEvent.id)
                             .expect('Content-Type', /html/)
@@ -316,7 +316,7 @@ describe('Server', function(){
                                 expect($('.root > .outcomes > .outcome')).to.have.length(expectedOutcomes.length);
                             })
                             .end(function(err, res){
-                                done(err);
+                                cb(err);
                             });
                     }, function(err){
                         cb(err);
@@ -324,7 +324,7 @@ describe('Server', function(){
                 }, function(err){
                     done(err);
                 })
-            })
+            }).catch(done);
         })
 
 
@@ -343,7 +343,7 @@ describe('Server', function(){
                     .end(function(err, res){
                         done(err);
                     });
-            })
+            }).catch(done);
         })
 
 

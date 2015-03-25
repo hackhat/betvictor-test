@@ -1,9 +1,10 @@
-var React  = require('react');
-var _      = require('lodash');
-var Sports = require('./Sports');
-var Events = require('./Events');
-var en_US  = require('client/i18n/en_US');
-var pt_PT  = require('client/i18n/pt_PT');
+var React    = require('react');
+var _        = require('lodash');
+var Sports   = require('./Sports');
+var Events   = require('./Events');
+var Outcomes = require('./Outcomes');
+var en_US    = require('client/i18n/en_US');
+var pt_PT    = require('client/i18n/pt_PT');
 // This is for a simple project, therefore we can just use
 // "en" instead of the full name "en_US".
 var languages = {
@@ -44,6 +45,9 @@ module.exports = React.createClass({
         }
         if(this.props.data.events){
             content = React.createElement(Events, {events: this.props.data.events})
+        }
+        if(this.props.data.outcomes){
+            content = React.createElement(Outcomes, {outcomes: this.props.data.outcomes})
         }
         return React.DOM.div({
             className: 'root'
