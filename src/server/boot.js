@@ -48,7 +48,7 @@ module.exports = function(options, cb){
 
 
 
-    app.get('/:lang(en|pt)', function(req, res){
+    app.get('/:lang(en|pt)/sports', function(req, res){
         var data = {};
         var lang = req.params.lang || 'en';
         dataSource.getSports().then(function(sports){

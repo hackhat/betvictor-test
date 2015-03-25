@@ -74,7 +74,7 @@ describe('Server', function(){
 
 
 
-    describe.only('GET /:lang', function(){
+    describe('GET /:lang/sports', function(){
 
 
 
@@ -82,7 +82,7 @@ describe('Server', function(){
             stubRequestWithCorrectData();
             createApp().then(function(){
                 supertest(app)
-                    .get('/en')
+                    .get('/en/sports')
                     .expect('Content-Type', /html/)
                     .expect(200)
                     .expect(function(res){
@@ -106,11 +106,11 @@ describe('Server', function(){
 
 
 
-            it.only('english', function(done){
+            it('english', function(done){
                 stubRequestWithCorrectData();
                 createApp().then(function(){
                     supertest(app)
-                        .get('/en')
+                        .get('/en/sports')
                         .expect('Content-Type', /html/)
                         .expect(200)
                         .expect(function(res){
@@ -125,11 +125,11 @@ describe('Server', function(){
 
 
 
-            it.only('portuguese', function(done){
+            it('portuguese', function(done){
                 stubRequestWithCorrectData();
                 createApp().then(function(){
                     supertest(app)
-                        .get('/pt')
+                        .get('/pt/sports')
                         .expect('Content-Type', /html/)
                         .expect(200)
                         .expect(function(res){
