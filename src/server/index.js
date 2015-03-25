@@ -6,4 +6,6 @@
 require = require('../../getWebpackRequire');
 require('server/boot')({}).then(function(data){
     data.app.listen(80);
+}).catch(function(err){
+    console.log(err.stack)
 });
