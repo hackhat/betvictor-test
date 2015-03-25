@@ -84,9 +84,7 @@ describe('Server API', function(){
                     .get('/api/sports')
                     .expect('Content-Type', /application\/json/)
                     .expect(function(res){
-                        var sports = res.body;
-                        // By comparing with liveData_day0 we know that it loaded only once.
-                        expect(sports).to.deep.equals(_.sortBy(liveData_day0.sports, 'pos'));
+                        expect(res.body.version).to.be.equal(liveData_day0.version);
                     })
                     .expect(200)
                     .end(function(err, res){
@@ -121,9 +119,7 @@ describe('Server API', function(){
                     .get('/api/sports')
                     .expect('Content-Type', /application\/json/)
                     .expect(function(res){
-                        var sports = res.body;
-                        // By comparing with liveData_day1 we know that it loaded only twice.
-                        expect(sports).to.deep.equals(_.sortBy(liveData_day1.sports, 'pos'));
+                        expect(res.body.version).to.be.equal(liveData_day1.version);
                     })
                     .expect(200)
                     .end(function(err, res){
@@ -164,6 +160,21 @@ describe('Server API', function(){
             }, function(err){
                 expect(err).to.be.ok;
                 expect(err.message).to.be.equal('Unexpected error');
+            }).then(function(){
+                var deferred  = Q.defer();
+                supertest(app)
+                    .get('/api/sports')
+                    .expect('Content-Type', /application\/json/)
+                    .expect(function(res){
+                        expect(res.body.version).to.be.equal(liveData_day0.version);
+                    })
+                    .expect(200)
+                    .end(function(err, res){
+                        if(err) return deferred.reject(err);
+                        deferred.resolve();
+                    });
+                return deferred.promise;
+            }).then(function(){
                 done();
             }).catch(done);
         })
@@ -205,7 +216,7 @@ describe('Server API', function(){
                     .get('/api/sports')
                     .expect('Content-Type', /application\/json/)
                     .expect(function(res){
-                        var returnedSports = res.body;
+                        var returnedSports = res.body.sports;
                         expect(returnedSports).to.deep.equals(_.sortBy(liveData_day0.sports, 'pos'));
                     })
                     .expect(200)
@@ -235,7 +246,7 @@ describe('Server API', function(){
                         .expect('Content-Type', /application\/json/)
                         .expect(200)
                         .expect(function(res){
-                            var returnedEvents = res.body;
+                            var returnedEvents = res.body.events;
                             expect(returnedEvents).to.deep.equals(expectedSport.events);
                         })
                         .end(function(err, res){
@@ -267,7 +278,7 @@ describe('Server API', function(){
                             .expect('Content-Type', /application\/json/)
                             .expect(200)
                             .expect(function(res){
-                                var outcomes = res.body;
+                                var outcomes = res.body.outcomes;
                                 expect(outcomes).to.deep.equals(expectedEvent.outcomes);
                             })
                             .end(function(err, res){
