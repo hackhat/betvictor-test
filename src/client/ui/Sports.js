@@ -14,7 +14,8 @@ module.exports = React.createClass({
 
 
     contextTypes: {
-        data: React.PropTypes.object
+        data : React.PropTypes.object,
+        lang : React.PropTypes.object,
     },
 
 
@@ -22,9 +23,15 @@ module.exports = React.createClass({
     render: function(){
         return React.DOM.div({
             className: 'sports'
-        }, this.props.sports.map(function(sport){
-            return React.createElement(Sport, sport);
-        }))
+        },
+            React.DOM.h1({
+                className: 'title'
+            }, this.context.lang['sports']),
+            this.props.sports.map(function(sport){
+                sport.key = sport.id;
+                return React.createElement(Sport, sport);
+            })
+        )
     }
 
 

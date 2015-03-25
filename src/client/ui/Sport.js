@@ -14,7 +14,8 @@ module.exports = React.createClass({
 
 
     contextTypes: {
-        data: React.PropTypes.object
+        data : React.PropTypes.object,
+        lang : React.PropTypes.object
     },
 
 

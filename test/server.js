@@ -74,11 +74,11 @@ describe('Server', function(){
 
 
 
-    describe('GET /:lang', function(){
+    describe.only('GET /:lang', function(){
 
 
 
-        it.only('should return an html page with all the sports', function(done){
+        it('should return an html page with all the sports', function(done){
             stubRequestWithCorrectData();
             createApp().then(function(){
                 supertest(app)
@@ -92,12 +92,58 @@ describe('Server', function(){
                             expect($(sportEl).text()).to.be.equal(expectedSports[i].title);
                             expect($(sportEl).attr('href')).to.be.equal('/en/sports/' + expectedSports[i].id);
                         })
-                        expect($('.root > .sports > .sport')).to.have.length(expectedSports.length)
+                        expect($('.root > .sports > .sport')).to.have.length(expectedSports.length);
                     })
                     .end(function(err, res){
                         done(err);
                     });
             })
+        })
+
+
+
+        describe('should return the page in the correct language', function(){
+
+
+
+            it.only('english', function(done){
+                stubRequestWithCorrectData();
+                createApp().then(function(){
+                    supertest(app)
+                        .get('/en')
+                        .expect('Content-Type', /html/)
+                        .expect(200)
+                        .expect(function(res){
+                            $ = cheerio.load(res.text);
+                            expect($('.title').text()).to.be.equal('Sports');
+                        })
+                        .end(function(err, res){
+                            done(err);
+                        });
+                })
+            })
+
+
+
+            it.only('portuguese', function(done){
+                stubRequestWithCorrectData();
+                createApp().then(function(){
+                    supertest(app)
+                        .get('/pt')
+                        .expect('Content-Type', /html/)
+                        .expect(200)
+                        .expect(function(res){
+                            $ = cheerio.load(res.text);
+                            expect($('.title').text()).to.be.equal('Desportos');
+                        })
+                        .end(function(err, res){
+                            done(err);
+                        });
+                })
+            })
+
+
+
         })
 
 
