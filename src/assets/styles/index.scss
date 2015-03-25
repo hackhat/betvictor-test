@@ -39,6 +39,7 @@ h1 {
         line-height : 36px;
         padding     : 0 10px;
         font-weight : bold;
+        transition  : all .3s;
 
         &:hover {
             background : $blue;
