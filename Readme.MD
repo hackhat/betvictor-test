@@ -100,8 +100,8 @@ Coded with [sublime text 2](http://www.sublimetext.com/2).
 
 A lot more things could be done like translate every data from the source, make it isomorphic and automate some tasks. I've tried to use a new way to render the CSS (with my smart-css tool) but it would took even more time to implement.
 This application is entirely based on the server, no client side JavaScript code is run. Adding stores and proper UI, the site can be even faster and more appealing.
-
-
+The routing system could be better: a) routes on the client side should be generated and not manually written; b) server side could use route contexts; c) routes could be isomorphic;
+Errors that happen on the server should be logged with something like [node-bunyan](https://github.com/trentm/node-bunyan) instead of being returned to the client.
 
 ## Install
 

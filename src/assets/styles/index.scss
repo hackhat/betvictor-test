@@ -29,8 +29,21 @@ h1 {
 
 
 .root {
+    .header {
+        background : $greyLight;
+    }
+
     .logo {
-        text-align: left;
+        height      : 36px;
+        display     : inline-block;
+        line-height : 36px;
+        padding     : 0 10px;
+        font-weight : bold;
+
+        &:hover {
+            background : $blue;
+            color      : white;
+        }
     }
 }
 

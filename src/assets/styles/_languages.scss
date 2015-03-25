@@ -1,7 +1,7 @@
 .languages {
-    text-align : right;
     background : $greyLight;
-    max-width  : 100px;
+    float      : right;
+    display    : inline-block;
 
     .language {
         padding    : 10px;
