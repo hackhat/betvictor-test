@@ -22,7 +22,7 @@ module.exports = React.createClass({
 
     render: function(){
         return React.DOM.a({
-            className : 'sport',
+            className : 'sport item',
             href      : '/' + this.context.data.lang + '/sports/' + this.props.id
         }, this.props.title)
     }

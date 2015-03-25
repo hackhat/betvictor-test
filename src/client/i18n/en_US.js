@@ -1,3 +1,6 @@
 module.exports = {
-    sports: 'Sports'
+    sports : 'Sports',
+    events : 'Events',
+    score  : 'Score',
+    status : 'Status',
 }

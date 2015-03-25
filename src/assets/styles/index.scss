@@ -3,5 +3,53 @@
 
 
 
+body {
+    background: white;
+}
+
+
+
+a, a:hover {
+    text-decoration : none;
+}
+
+
+
+h1 {
+    padding: 20px;
+}
+
+
+
 .root {
+}
+
+
+
+.item {
+    border-top : 1px solid hsl(0, 0%, 78%);
+    width         : 100%;
+    min-height    : 60px;
+    display       : block;
+    line-height   : 25px;
+    padding       : 17px;
+    box-sizing    : border-box;
+    transition    : all .3s;
+
+    &:last-child {
+        border-bottom : 1px solid hsl(0, 0%, 78%);
+    }
+
+    & * {
+        pointer-events : none;
+        padding-right  : 15px;
+    }
+
+    &:hover {
+        background : hsl(219, 97%, 60%);
+        color      : white;
+        & * {
+            color: white
+        }
+    }
 }

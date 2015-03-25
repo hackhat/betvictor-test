@@ -1,6 +1,7 @@
 var React  = require('react');
 var _      = require('lodash');
 var Sports = require('./Sports');
+var Events = require('./Events');
 var en_US  = require('client/i18n/en_US');
 var pt_PT  = require('client/i18n/pt_PT');
 // This is for a simple project, therefore we can just use
@@ -37,9 +38,15 @@ module.exports = React.createClass({
 
 
     render: function(){
+        var content;
+        if(this.props.data.sports){
+            content = React.createElement(Sports, {sports: this.props.data.sports})
+        }else if(this.props.data.events){
+            content = React.createElement(Events, {events: this.props.data.events})
+        }
         return React.DOM.div({
             className: 'root'
-        }, React.createElement(Sports, {sports: this.props.data.sports}))
+        }, content)
     }
 
 
