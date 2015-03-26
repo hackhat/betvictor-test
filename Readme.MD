@@ -8,11 +8,12 @@ Final result:
   <img src ="./docs/img/animation2.gif" />
 </p>
 
+*All is rendered on the server side, no client side JavaScript is run.*
 
 
 ## Objectives
 
-Create a Node.js application that calls the following URL and navigates through it's content.
+Create a Node.js application that calls the following URL and navigates through its content.
 
 URL: http://www.betvictor.com/live/en/live/list.json
 
@@ -36,41 +37,41 @@ Extra points for: Language support, Caching;
 
 ## Results
 
-All the requisites has been completed and backed with automatic tests.
+All the requisites have been completed backed with automatic tests with 100% test coverage.
 
 
 ### Architecture
 
-The application is divided in 3 main parts:
+**The application has 3 main parts:**
 
  - Data source;
  - API;
  - Server side rendering;
 
-Uses promises to handle asynchronous flows.
+Note: the app uses promises to handle asynchronous flows.
 
 
 ### Data source and caching
 
 The data source's responsibility is to load data from the endpoint `http://www.betvictor.com/live/en/live/list.json` and then return when requested.
 In order to increase performance all data is cached for 5 minutes.
-View it's [api](https://rawgit.com/hackhat/betvictor-test/v0.0.2/docs/jsduck/index.html#!/api/server.DataSource) or [source code](./src/server/DataSource.js).
+View its [api](https://rawgit.com/hackhat/betvictor-test/v0.0.2/docs/jsduck/index.html#!/api/server.DataSource) or [source code](./src/server/DataSource.js).
 
 
 ### API
 
-The server returns data as json on these endpoints:
+The server returns data as JSON on these endpoints:
 
- - `localhost/api/sports`: all sports as json;
- - `localhost/api/sports/<sportId>/events`: all events of the `<sportId>` specified;
- - `localhost/api/sports/<sportId>/events/<eventId>`: all outcomes of the `<sportId>` and `<eventId>` specified;
+ - `localhost/api/sports`: all sports as JSON;
+ - `localhost/api/sports/<sportId>/events`: all events of the `<sportId>` specified as JSON;
+ - `localhost/api/sports/<sportId>/events/<eventId>`: all outcomes of the `<sportId>` and `<eventId>` specified as JSON;
 
 All the API endpoints are covered by tests.
 
 
 ### Server side rendering
 
-The server outputs html rendered with react js on several endpoints:
+The server outputs html rendered with [react](http://facebook.github.io/react/) on several endpoints:
 
  - `localhost/<lang>/sports`: all sports in `<lang>` specified;
  - `localhost/<lang>/sports/<sportId>`: all events in `<lang>` and `<sportId>` specified;
@@ -81,7 +82,7 @@ All the html endpoints are covered by tests.
 
 ### Multilanguage
 
-Currently the server only has only 2 languages: [portuguese](./src/client/i18n/pt_PT.js) and [english](./src/client/i18n/en_US.js).
+Currently the server only has only 2 languages: [Portuguese](./src/client/i18n/pt_PT.js) and [English](./src/client/i18n/en_US.js).
 
 To note that only the application part is translated (like titles and some other items). No data has been translated.
 
@@ -102,18 +103,33 @@ CSS part, therefore this could be improved.
 
 ## Conclusions
 
-A lot more things could be done like translate every data from the source, make it isomorphic and
-automate some tasks. I've tried to use a new way to render the CSS (with my [smart-css](https://github.com/hackhat/smart-css) tool)
-but it would took even more time to implement.
 
-This application is entirely based on the server, no client side JavaScript code is run.
-Adding stores and proper UI, the site can be even faster and more appealing.
+The project is not perfect but does what is supposed to do.
 
-The routing system could be better: a) routes on the client side should be generated
-and not manually written; b) server side could use route contexts; c) routes could be isomorphic;
+**Some improvements that could be done:**
 
-Errors that happen on the server should be logged with something like
-[node-bunyan](https://github.com/trentm/node-bunyan) instead of being returned to the client.
+ - Translate data: for example the text "First half" could be translated too;
+ - Make routes isomorphic: by doing this you reuse the same code between client and server;
+   - Search engines gets the html with populated data;
+   - End users get only the JSON data after the first request (the first request get an html page with populated data);
+ - Automate the CSS rendering: this has to be done with gulp to keep it in memory instead of writing to file;
+ - The routing system could be better:
+  - Routes on the client side should be generated and not manually written;
+  - Server side could use route contexts;
+ - Errors that happen on the server should be logged with something like
+   [node-bunyan](https://github.com/trentm/node-bunyan) instead of being returned to the client.
+ - The rendering part of the app could reuse the API endpoints instead of using the DataSource.
+
+
+**What went bad:**
+
+ - I've tried to use a new way to render the CSS (with my [smart-css](https://github.com/hackhat/smart-css) tool)
+   but it would took even more time to implement. A new gulp task would be required to load the app and write
+   the CSS to a file.
+ - Being a long user of my own library, which abstracts express, [easy-express](https://www.npmjs.com/package/easy-express)
+   I had to touch express directly to keep the code simpler and to limit new concepts;
+
+
 
 ## Install
 
@@ -128,10 +144,10 @@ Errors that happen on the server should be logged with something like
 To start the server in development mode you just run: `gulp server`;
 
 On every change in the `src` folder, the server will restart.
-Note that you need to rebuild the css in order to take effect by running this script `gulp build`.
-The development tools can be improved to auto refresh the css files.
+Note that you need to rebuild the CSS in order to take effect by running this script `gulp build`.
+The development tools can be improved to auto refresh the CSS files.
 
-Now go to (localhost/en/sports)[http://localhost/en/sports] to view the app working;
+Now go to (http://localhost/en/sports)[http://localhost/en/sports] to view the app working;
 
 
 
@@ -177,9 +193,9 @@ Code coverage done with [istanbul](https://github.com/gotwarlost/istanbul).
 </p>
 
 All the tests has been written with [mocha](https://github.com/mochajs/mocha), [supertest](https://github.com/visionmedia/supertest),
-[cheerio](https://github.com/cheeriojs/cheerio) and [sinom](http://sinonjs.org/) and takes 2 seconds to run them.
+[cheerio](https://github.com/cheeriojs/cheerio), [chai/expect](http://chaijs.com/) and [sinom](http://sinonjs.org/) and takes 2 seconds to run them.
 
-Fixtures are stored into the [/test/data](/test/data).There are 2 files which contains 2 different days' data.
+Fixtures are stored into the [/test/data](/test/data). There are 2 files which contains 2 different days' data.
 Are required to test whenever it loads fresh data every 5 minutes.
 
 Used:
