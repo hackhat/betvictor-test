@@ -2,7 +2,7 @@
 
 This is a test project for Bet Victor.
 
-Final result:
+**Final result:**
 
 <p align="center">
   <img src ="./docs/img/animation2.gif" />
@@ -10,7 +10,7 @@ Final result:
 
 *The app is rendered on the server side with react components, no client side JavaScript is run.*
 
-Jump to:
+**Jump to:**
 
  - [Install](#install);
  - [All commands](#all-commands);
