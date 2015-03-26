@@ -182,7 +182,7 @@ All the tests has been written with [mocha](https://github.com/mochajs/mocha), [
 Fixtures are stored into the [/test/data](/test/data).There are 2 files which contains 2 different days' data.
 Are required to test whenever it loads fresh data every 5 minutes.
 
-Used:
+**Used:**
 
  - Fake timers: for testing the cache of the DataSource;
  - Async stubs;
