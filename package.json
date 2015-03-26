@@ -1,6 +1,6 @@
 {
   "name": "betvictor_test",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "",
   "author": "hackhat",
   "dependencies": {
@@ -10,7 +10,6 @@
     "extract-text-webpack-plugin": "^0.3.8",
     "gulp": "^3.8.11",
     "gulp-clean": "^0.3.1",
-    "gulp-cucumber": "0.0.8",
     "gulp-shell": "^0.3.0",
     "gulp-util": "^3.0.4",
     "html-webpack-plugin": "^1.1.0",
