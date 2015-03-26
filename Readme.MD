@@ -10,6 +10,12 @@ Final result:
 
 *The app is rendered on the server side with react components, no client side JavaScript is run.*
 
+Jump to:
+
+ - [Install](#install);
+ - [All commands](#all-commands);
+ - [API](#api-1);
+
 
 ## Objectives
 
