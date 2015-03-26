@@ -162,7 +162,7 @@ The project is not perfect but does what is supposed to do.
 All commands should be run from the root of the app:
 
  - Build css and html: `gulp build` (needed after changing styles or html files);
- - Run a local server: `gulp server` (then go to (http://localhost/en/sports)[http://localhost/en/sports]);
+ - Run a local server: `gulp server` (then go to [http://localhost/en/sports](http://localhost/en/sports));
  - Run tests:
    - With code coverage: `istanbul cover --root ./src --hook-run-in-context node_modules/mocha/bin/_mocha -- -R spec`
      (remember to first install istanbul: `npm install istanbul -g`. Code coverage report is located in `./coverage/lcov-report/index.html`)
@@ -178,7 +178,7 @@ On every change in the `src` folder, the server will restart.
 Note that you need to rebuild the CSS in order to take effect by running this script `gulp build`.
 The development tools can be improved to auto refresh the CSS files.
 
-Now go to (http://localhost/en/sports)[http://localhost/en/sports] to view the app working;
+Now go to [http://localhost/en/sports](http://localhost/en/sports) to view the app working;
 
 
 
