@@ -8,7 +8,7 @@ Final result:
   <img src ="./docs/img/animation2.gif" />
 </p>
 
-*All is rendered on the server side, no client side JavaScript is run.*
+*The app is rendered on the server side with react components, no client side JavaScript is run.*
 
 
 ## Objectives
@@ -19,25 +19,37 @@ URL: http://www.betvictor.com/live/en/live/list.json
 
 The Content hierarchy is: Sports > Events > Outcomes
 
-Minimum requisites are:
+**Minimum requisites are:**
 
- - Method to list all sports (/sports)
- - Method to list all events for a given sport (/sports/<id>)
- - Method to list all outcomes for a given event (/sports/<id>/events/<id>)
- - Full test coverage (Mocha is a good test framework)
+ - Method to list all sports (`/sports`);
+ - Method to list all events for a given sport (`/sports/<id>`);
+ - Method to list all outcomes for a given event (`/sports/<id>/events/<id>`);
+ - Full test coverage (Mocha is a good test framework);
 
-Notes:
+**Notes:**
 
  - Obey the list order as per upstream API 'pos' property
  - Please use a local Git repository and commit as you go along
 
-Extra points for: Language support, Caching;
+**Extra points for:**
+
+ - Language support;
+ - Caching;
 
 
 
 ## Results
 
-All the requisites have been completed backed with automatic tests with 100% test coverage.
+All the requisites have been completed backed with [automatic tests](#tests) with [100% test coverage](#test-coverage).
+
+I've decided to create 2 endpoints instead of only one:
+
+ - [Rendered html](#server-side-rendering);
+ - [JSON API](#api): to be used by the client side app (not included in this project);
+
+The sports and events are ordered by the 'pos' property.
+
+Currently the app supports [2 languages](#multilanguage) and uses [5 minutes cache](#data-source-and-caching).
 
 
 ### Architecture
@@ -55,7 +67,8 @@ Note: the app uses promises to handle asynchronous flows.
 
 The data source's responsibility is to load data from the endpoint `http://www.betvictor.com/live/en/live/list.json` and then return when requested.
 In order to increase performance all data is cached for 5 minutes.
-View its [api](https://rawgit.com/hackhat/betvictor-test/v0.0.2/docs/jsduck/index.html#!/api/server.DataSource) or [source code](./src/server/DataSource.js).
+View its [api](https://rawgit.com/hackhat/betvictor-test/v0.0.2/docs/jsduck/index.html#!/api/server.DataSource), [source code](./src/server/DataSource.js)
+and [tests](./test/DataSource.js).
 
 
 ### API
@@ -66,7 +79,7 @@ The server returns data as JSON on these endpoints:
  - `localhost/api/sports/<sportId>/events`: all events of the `<sportId>` specified as JSON;
  - `localhost/api/sports/<sportId>/events/<eventId>`: all outcomes of the `<sportId>` and `<eventId>` specified as JSON;
 
-All the API endpoints are covered by tests.
+All the API endpoints are covered by [tests](./test/serverApi.js). See the [source code](./src/server/boot.js).
 
 
 ### Server side rendering
@@ -77,12 +90,13 @@ The server outputs html rendered with [react](http://facebook.github.io/react/) 
  - `localhost/<lang>/sports/<sportId>`: all events in `<lang>` and `<sportId>` specified;
  - `localhost/<lang>/sports/<sportId>/events/<eventId>`: all outcomes in `<lang>`, `<sportId>` and `<eventId>` specified;
 
-All the html endpoints are covered by tests.
+All the html endpoints are covered by [tests](./test/server.js). See the [source code](./src/server/boot.js).
 
 
 ### Multilanguage
 
 Currently the server only has only 2 languages: [Portuguese](./src/client/i18n/pt_PT.js) and [English](./src/client/i18n/en_US.js).
+Switching language will keep the same position in the app hierarchy, instead of redirecting to the root (better UX).
 
 To note that only the application part is translated (like titles and some other items). No data has been translated.
 
@@ -91,7 +105,7 @@ To note that only the application part is translated (like titles and some other
 
 The build process is based on [gulp](http://gulpjs.com/) and
 [webpack](http://webpack.github.io/). Currently the server doesn't rebuild the
-CSS part, therefore this could be improved.
+CSS part (this could be improved with some work).
 
 
 ### Tools
@@ -119,7 +133,6 @@ The project is not perfect but does what is supposed to do.
  - Errors that happen on the server should be logged with something like
    [node-bunyan](https://github.com/trentm/node-bunyan) instead of being returned to the client.
  - The rendering part of the app could reuse the API endpoints instead of using the DataSource.
-
 
 **What went bad:**
 
@@ -186,7 +199,7 @@ Code coverage done with [istanbul](https://github.com/gotwarlost/istanbul).
 
 
 
-## Test
+## Tests
 
 <p align="center">
   <img src ="./docs/img/test-report.jpg" />
